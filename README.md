@@ -35,10 +35,11 @@ npx hardhat test
 
 | Item | Details |
 |---|---|
-| **Network** | BSC Testnet (chainId: 97) |
-| **Token Factory** | [`0x7673...ef4`](https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code) ✅ Verified |
-| **Deployer** | `0xDd67F0108bd7CbC8A659FD0b057F15a1d08F3771` |
-| **Deployment TX** | See [deployment-token-factory.json](./deployment-token-factory.json) |
+| **Network** | **BSC Mainnet** (chainId: 56) |
+| **Token Factory** | [`0xdaAD...580`](https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) ✅ Verified |
+| **Demo Token (FKD)** | [`0x4f51...881`](https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881) |
+| **Demo TX** | [`0x6f90...9815`](https://bscscan.com/tx/0x6f90f4871d44494493bb18ab9955889d0c128179e33e7b97a9cbc04799299815) |
+| **Deployer** | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24` |
 
 ---
 

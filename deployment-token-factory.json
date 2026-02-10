@@ -1,10 +1,10 @@
 {
-  "network": "bscTestnet",
-  "chainId": "97",
+  "network": "bsc",
+  "chainId": "56",
   "contracts": {
-    "AITokenFactory": "0x7673410C98221b76853A98c027dBe150e4443ef4"
+    "AITokenFactory": "0xdaAD8d3679EAF994363b83D49c8159f98144b580"
   },
-  "deployer": "0xDd67F0108bd7CbC8A659FD0b057F15a1d08F3771",
-  "timestamp": "2026-02-08T10:37:51.165Z",
+  "deployer": "0x79749eA6bF5580A10b9F4716d41270DF75F44F24",
+  "timestamp": "2026-02-10T18:48:01.034Z",
   "type": "AI Token Creation Agent"
 }

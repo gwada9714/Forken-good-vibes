@@ -38,8 +38,10 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 ## Links
 
 - **GitHub**: https://github.com/gwada9714/Forken-good-vibes
-- **Contract (Verified)**: https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code
-- **Demo**: [TODO: add demo video link]
+- **Contract (Verified)**: https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code
+- **Demo Token**: https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881
+- **Demo TX**: https://bscscan.com/tx/0x6f90f4871d44494493bb18ab9955889d0c128179e33e7b97a9cbc04799299815
+- **Demo Video**: [TODO: add demo video link]
 
 ## Anti-Disqualification Statement
 
