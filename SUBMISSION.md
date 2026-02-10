@@ -28,7 +28,7 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 
 ### Tech Stack
 
-- Solidity 0.8.20 + OpenZeppelin 5.x
+- Solidity 0.8.24 + OpenZeppelin 5.x
 - Hardhat + ethers.js
 - Claude API (Anthropic) for AI decisions
 - BSC Mainnet (chainId: 56)
