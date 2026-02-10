@@ -94,7 +94,11 @@ good vibes/
 │
 ├── scripts/
 │   ├── deploy-token-factory.js  # Deploy script
-│   └── demo-token.js           # Demo: create a token
+│   ├── demo-token.js           # Demo: create a token
+│   └── create-demo-token-mainnet.js  # Mainnet demo
+│
+├── ai-advisor/
+│   └── tokenAnalyzer.ts       # AI parameter analyzer (client-side)
 │
 ├── test/
 │   ├── AITokenFactory.test.js   # Token Factory tests
@@ -144,7 +148,7 @@ npx hardhat run scripts/demo-token.js --network bscTestnet
 
 ## 🛠️ Tech Stack
 
-- **Smart Contracts**: Solidity 0.8.20, OpenZeppelin 5.x
+- **Smart Contracts**: Solidity 0.8.24, OpenZeppelin 5.x
 - **Framework**: Hardhat
 - **AI Engine**: Claude API (Anthropic)
 - **Blockchain**: BNB Smart Chain (BSC)

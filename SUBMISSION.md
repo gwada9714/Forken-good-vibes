@@ -1,4 +1,4 @@
-# DoraHacks Submission — Copy-Paste Ready
+# DoraHacks Submission
 
 ## Title
 
@@ -19,6 +19,7 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 **Liquidity provisioning, token launch, fundraising, and any market-facing actions are intentionally out of scope for this submission.**
 
 ### Key Features
+
 - AI-assisted tokenomics analysis (Claude API)
 - No-code ERC-20 deployment on BSC
 - On-chain proof: verified contract + tx hash
@@ -26,10 +27,11 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 - Fully reproducible: `npm install && npx hardhat test && deploy`
 
 ### Tech Stack
+
 - Solidity 0.8.20 + OpenZeppelin 5.x
 - Hardhat + ethers.js
 - Claude API (Anthropic) for AI decisions
-- BSC Testnet
+- BSC Mainnet (chainId: 56)
 
 ## Track
 
