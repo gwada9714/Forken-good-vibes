@@ -7,8 +7,29 @@
 ![opBNB](https://img.shields.io/badge/opBNB-F0B90B?style=flat&logo=binance&logoColor=white)
 ![Solidity](https://img.shields.io/badge/Solidity-%5E0.8.20-363636?style=flat&logo=solidity)
 ![AI Powered](https://img.shields.io/badge/AI-Claude-blueviolet?style=flat)
+![Tests](https://img.shields.io/badge/Tests-15%2F15%20passing-brightgreen?style=flat)
 
 ---
+
+## 🧑‍⚖️ For Judges — Quick Test (3 steps)
+
+```bash
+# 1. Install & compile
+npm install && npx hardhat compile
+
+# 2. Run tests (15/15 should pass)
+npx hardhat test
+
+# 3. View verified contracts on BSCScan
+```
+
+| Contract | BSCScan (Verified ✅) |
+|---|---|
+| AIVault | [0x0629...2D4](https://testnet.bscscan.com/address/0x06296556F72B3cF73405Cd4165D78a4e3109A2D4#code) |
+| StrategyExecutor | [0x270a...a78](https://testnet.bscscan.com/address/0x270a3bb9E7b0963C742B37d8cf5e353504380a78#code) |
+| AITokenFactory | [0x7673...ef4](https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code) |
+
+> **No API keys needed** to compile and run tests. The contracts are already deployed and verified on BSC Testnet.
 
 ## 📋 Description
 
@@ -149,10 +170,9 @@ good vibes/
 
 | Réseau | Contrat | Adresse |
 |--------|---------|---------|
-| BSC Testnet | AIVault | [`0x06296556F72B3cF73405Cd4165D78a4e3109A2D4`](https://testnet.bscscan.com/address/0x06296556F72B3cF73405Cd4165D78a4e3109A2D4) |
-| BSC Testnet | StrategyExecutor | [`0x270a3bb9E7b0963C742B37d8cf5e353504380a78`](https://testnet.bscscan.com/address/0x270a3bb9E7b0963C742B37d8cf5e353504380a78) |
-| BSC Mainnet | AIVault | `[Prêt à déployer]` |
-| BSC Mainnet | StrategyExecutor | `[Prêt à déployer]` |
+| BSC Testnet | AIVault | [`0x0629...2D4`](https://testnet.bscscan.com/address/0x06296556F72B3cF73405Cd4165D78a4e3109A2D4#code) ✅ Verified |
+| BSC Testnet | StrategyExecutor | [`0x270a...a78`](https://testnet.bscscan.com/address/0x270a3bb9E7b0963C742B37d8cf5e353504380a78#code) ✅ Verified |
+| BSC Testnet | AITokenFactory | [`0x7673...ef4`](https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code) ✅ Verified |
 
 ---
 
