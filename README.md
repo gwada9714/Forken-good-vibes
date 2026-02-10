@@ -1,230 +1,193 @@
-# 🤖 ForKen AI Vault
+# Forken — AI-Powered No-Code Token Factory on BNB Chain
 
-> Agent IA Autonome de Gestion de Trésorerie Crypto  
-> **BNB Good Vibes Only: OpenClaw Edition** | Track: Agent
+> Deploy ERC-20 tokens on BNB Chain with AI-assisted tokenomics.
+> **BNB Good Vibes Only: OpenClaw Edition** | Track: Builders
 
 ![BSC](https://img.shields.io/badge/BSC-F0B90B?style=flat&logo=binance&logoColor=white)
-![opBNB](https://img.shields.io/badge/opBNB-F0B90B?style=flat&logo=binance&logoColor=white)
 ![Solidity](https://img.shields.io/badge/Solidity-%5E0.8.20-363636?style=flat&logo=solidity)
 ![AI Powered](https://img.shields.io/badge/AI-Claude-blueviolet?style=flat)
-![Tests](https://img.shields.io/badge/Tests-15%2F15%20passing-brightgreen?style=flat)
+![Tests](https://img.shields.io/badge/Tests-passing-brightgreen?style=flat)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
 
 ---
 
-## 🧑‍⚖️ For Judges — Quick Test (3 steps)
+## ⚠️ Out of Scope
+
+Liquidity provisioning, token launch, fundraising, airdrops, and any market-facing actions are **intentionally excluded** from this submission.
+
+---
+
+## 🧑‍⚖️ Quick Test (3 steps)
 
 ```bash
 # 1. Install & compile
 npm install && npx hardhat compile
 
-# 2. Run tests (15/15 should pass)
+# 2. Run all tests
 npx hardhat test
 
-# 3. View verified contracts on BSCScan
+# 3. View verified contract on BSCScan ↓
 ```
 
-| Contract | BSCScan (Verified ✅) |
+---
+
+## 🔗 On-Chain Proof
+
+| Item | Details |
 |---|---|
-| AIVault | [0x0629...2D4](https://testnet.bscscan.com/address/0x06296556F72B3cF73405Cd4165D78a4e3109A2D4#code) |
-| StrategyExecutor | [0x270a...a78](https://testnet.bscscan.com/address/0x270a3bb9E7b0963C742B37d8cf5e353504380a78#code) |
-| AITokenFactory | [0x7673...ef4](https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code) |
-
-> **No API keys needed** to compile and run tests. The contracts are already deployed and verified on BSC Testnet.
-
-## 📋 Description
-
-ForKen AI Vault est un **agent IA autonome** qui optimise automatiquement vos positions DeFi sur BNB Chain. L'agent analyse les marchés, prend des décisions intelligentes et exécute des transactions onchain sans intervention humaine.
-
-### ✨ Fonctionnalités
-
-| Feature | Description |
-|---------|-------------|
-| 🎯 **Staking automatique** | Dépose vers les pools avec le meilleur APY |
-| 🔄 **Compound automatique** | Réinvestit les rewards automatiquement |
-| ⚠️ **Analyse de risque** | Détecte les signaux de risque et protège |
-| 🌉 **Bridge cross-chain** | Optimise les yields entre BSC et opBNB |
-| 🔒 **Protection MEV** | Transactions protégées |
+| **Network** | BSC Testnet (chainId: 97) |
+| **Token Factory** | [`0x7673...ef4`](https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code) ✅ Verified |
+| **Deployer** | `0xDd67F0108bd7CbC8A659FD0b057F15a1d08F3771` |
+| **Deployment TX** | See [deployment-token-factory.json](./deployment-token-factory.json) |
 
 ---
 
-## 🚀 Quick Start
+## 📋 What This Is
 
-### Prérequis
+Forken Token Factory is a **minimal, reproducible no-code module** to deploy ERC-20 tokens on BNB Chain.
 
-- Node.js 18+
-- npm ou yarn  
-- Wallet avec BNB pour gas
-- (Optionnel) Clé API Anthropic pour l'agent IA
+An AI agent (Claude) analyzes your project and suggests optimal tokenomics before deployment. The user always signs with their own wallet — the AI only advises.
 
-### 1. Installation
+### How It Works
 
-```bash
-cd "good vibes"
-npm install
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  User Input  │────▶│  Claude AI   │────▶│  On-Chain    │
+│  "I want a   │     │  Analyzes &  │     │  Factory     │
+│   token for  │     │  Suggests    │     │  Deploys     │
+│   my game"   │     │  Tokenomics  │     │  ERC-20      │
+└──────────────┘     └──────────────┘     └──────────────┘
+                                                │
+                                                ▼
+                                          Contract Address
+                                          + TX Hash
 ```
 
-### 2. Configuration
+1. **User describes** their project in natural language
+2. **Claude AI analyzes** and suggests name, symbol, supply, decimals
+3. **User reviews** and approves the parameters
+4. **Factory deploys** the ERC-20 on BNB Chain
+5. **Proof returned** — contract address + tx hash
 
-```bash
-cp .env.example .env
-```
-
-Éditez `.env` avec vos valeurs :
-```env
-PRIVATE_KEY=your_deployer_private_key
-ANTHROPIC_API_KEY=your_claude_api_key
-AI_AGENT_PRIVATE_KEY=your_agent_wallet_key
-```
-
-### 3. Compilation
-
-```bash
-npx hardhat compile
-```
-
-### 4. Tests
-
-```bash
-npx hardhat test
-```
-
-### 5. Déploiement
-
-```bash
-# Testnet BSC
-npx hardhat run scripts/deploy.js --network bscTestnet
-
-# Mainnet BSC
-npx hardhat run scripts/deploy.js --network bsc
-```
-
-### 6. Lancer l'agent IA
-
-```bash
-cd ai-agent
-npm install
-npm start
-```
+### Key Principles
+- ✅ **No agent private key** — user always signs
+- ✅ **No fund management** — factory only creates tokens
+- ✅ **Deterministic output** — same input = same token config
+- ✅ **On-chain verifiable** — everything visible on BSCScan
 
 ---
 
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    FORKEN AI VAULT                           │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐   │
-│  │   Frontend   │───▶│  AI Agent    │───▶│Smart Contract│   │
-│  │   (React)    │    │ (Claude AI)  │    │  (Solidity)  │   │
-│  └──────────────┘    └──────────────┘    └──────────────┘   │
-│         │                   │                    │           │
-│         ▼                   ▼                    ▼           │
-│  Dashboard avec       Analyse +            Exécution        │
-│  dépôt/retrait       décisions            onchain           │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 📁 Structure du Projet
+## 📁 Project Structure
 
 ```
 good vibes/
-├── contracts/              # Smart contracts Solidity
-│   ├── AIVault.sol         # Contrat principal
-│   ├── StrategyExecutor.sol # Exécution des stratégies
-│   └── interfaces/
-│       ├── IForKenStaking.sol
-│       └── IForKenBridge.sol
+├── contracts/
+│   ├── AITokenFactory.sol     # Token Factory contract (main)
+│   ├── AIVault.sol            # AI Vault (bonus module)
+│   └── StrategyExecutor.sol   # Strategy executor (bonus)
 │
-├── ai-agent/               # Backend IA (TypeScript)
-│   ├── index.ts            # Entry point + scheduler
-│   ├── decision-engine.ts  # Moteur de décision (Claude API)
-│   ├── risk-analyzer.ts    # Analyse de risque
-│   └── executor.ts         # Exécution onchain
+├── ai-agent/                  # AI Backend (Claude API)
+│   ├── index.ts               # Entry point
+│   ├── decision-engine.ts     # Claude integration
+│   └── risk-analyzer.ts       # Risk analysis
 │
-├── frontend/               # Interface React
-│   ├── AIVaultPage.tsx     # Page principale
-│   ├── components/
-│   │   ├── VaultDeposit.tsx
-│   │   ├── VaultHistory.tsx
-│   │   └── AIDecisionLog.tsx
-│   └── hooks/
-│       └── useAIVault.ts
+├── scripts/
+│   ├── deploy-token-factory.js  # Deploy script
+│   └── demo-token.js           # Demo: create a token
 │
-├── scripts/                # Scripts de déploiement
-│   └── deploy.js
+├── test/
+│   ├── AITokenFactory.test.js   # Token Factory tests
+│   └── AIVault.test.js          # Vault tests
 │
-├── test/                   # Tests
-│   └── AIVault.test.js
-│
-└── hardhat.config.js       # Configuration Hardhat
+├── .env.example               # Environment template
+├── deployment-token-factory.json  # Deployed addresses
+└── hardhat.config.cjs          # Hardhat configuration
 ```
 
 ---
 
-## 🔗 Contrats Déployés
+## 🚀 Quickstart
 
-| Réseau | Contrat | Adresse |
-|--------|---------|---------|
-| BSC Testnet | AIVault | [`0x0629...2D4`](https://testnet.bscscan.com/address/0x06296556F72B3cF73405Cd4165D78a4e3109A2D4#code) ✅ Verified |
-| BSC Testnet | StrategyExecutor | [`0x270a...a78`](https://testnet.bscscan.com/address/0x270a3bb9E7b0963C742B37d8cf5e353504380a78#code) ✅ Verified |
-| BSC Testnet | AITokenFactory | [`0x7673...ef4`](https://testnet.bscscan.com/address/0x7673410C98221b76853A98c027dBe150e4443ef4#code) ✅ Verified |
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Install & Compile
+
+```bash
+npm install
+npx hardhat compile
+```
+
+### Run Tests
+
+```bash
+npx hardhat test
+```
+
+### Deploy to BSC Testnet
+
+```bash
+cp .env.example .env
+# Edit .env with your PRIVATE_KEY and BSCSCAN_API_KEY
+npx hardhat run scripts/deploy-token-factory.js --network bscTestnet
+```
+
+### Create a Demo Token
+
+```bash
+npx hardhat run scripts/demo-token.js --network bscTestnet
+```
 
 ---
 
-## 🛠️ Stack Technique
+## 🛠️ Tech Stack
 
-- **Smart Contracts**: Solidity 0.8.19, Hardhat, OpenZeppelin
+- **Smart Contracts**: Solidity 0.8.20, OpenZeppelin 5.x
+- **Framework**: Hardhat
 - **AI Engine**: Claude API (Anthropic)
-- **Frontend**: React, TypeScript, ethers.js
-- **Blockchain**: BNB Smart Chain, opBNB
+- **Blockchain**: BNB Smart Chain (BSC)
+- **Testing**: Chai + Hardhat Network
 
 ---
 
-## 🧠 Comment l'IA Fonctionne
+## 🔒 Security
 
-1. **Collecte de données** : L'agent récupère les APY des pools, TVL, et métriques de risque
-2. **Analyse Claude** : Les données sont envoyées à Claude pour analyse
-3. **Décision** : Claude retourne une décision (stake/unstake/compound/bridge)
-4. **Exécution** : L'agent exécute la transaction onchain
-5. **Logging** : Le raisonnement est stocké onchain pour transparence
+- ✅ OpenZeppelin contracts (battle-tested)
+- ✅ Input validation (name, symbol length, supply > 0)
+- ✅ Ownership assigned to user, NOT factory
+- ✅ No admin backdoors
+- ✅ Events emitted for transparency
 
-### Exemple de décision IA
+---
 
-```json
-{
-  "action": "stake",
-  "poolId": 2,
-  "amount": "1.5",
-  "reasoning": "Pool 2 offers 25% APY with moderate risk (5/10). Current position is underallocated. Gas costs are minimal compared to expected 30-day yield.",
-  "confidence": 85
-}
+## 📊 Contract Interface
+
+```solidity
+// Create a new ERC-20 token
+function createToken(
+    string memory name,      // e.g. "My Game Token"
+    string memory symbol,    // e.g. "MGT"
+    uint8 decimals,          // e.g. 18
+    uint256 initialSupply    // e.g. 1000000 * 10^18
+) external returns (address tokenAddress);
+
+// View functions
+function getUserTokens(address user) external view returns (address[] memory);
+function getTokenCount() external view returns (uint256);
+function getTokens(uint256 offset, uint256 limit) external view returns (address[] memory);
 ```
-
----
-
-## 🔒 Sécurité
-
-- ✅ Contrats audités avec OpenZeppelin
-- ✅ Reentrancy guards sur toutes les fonctions
-- ✅ Pausable en cas d'urgence
-- ✅ Agent wallet séparé du owner
-- ✅ Limite de confiance pour exécution (>60%)
 
 ---
 
 ## 📜 License
 
-MIT License - ForKen Team 2026
+MIT License — ForKen Team 2026
 
 ---
 
-## 🔗 Liens
+## 🔗 Links
 
 - **Hackathon**: [DoraHacks Good Vibes](https://dorahacks.io/hackathon/goodvibes/detail)
-- **Discord**: [BNB Chain #vibe-coding](https://discord.com/channels/789402563035660308/1463806329104760942)
-- **GitHub BNB**: [good-vibes-only-openclaw-edition](https://github.com/bnb-chain/good-vibes-only-openclaw-edition)
+- **BNB Chain**: [bnbchain.org](https://www.bnbchain.org)
+- **OpenClaw**: [GitHub](https://github.com/bnb-chain/good-vibes-only-openclaw-edition)
