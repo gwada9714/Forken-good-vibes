@@ -97,24 +97,64 @@
 
 ---
 
+### 2026-02-11 — Day 5: Claude API Integration in Token Factory Flow
+
+#### Session 10: Claude API Advisor for Token Creation
+**Goal**: Add a real Claude API call in the Token Factory flow so the AI integration is in the demonstrated execution path, not just the vault module.
+
+**AI Contributions**:
+- Created `ai-advisor/claudeAdvisor.ts` — Claude API service that takes a natural language project description and returns structured token parameter suggestions (name, symbol, decimals, supply, reasoning, alternatives)
+- Uses `claude-sonnet-4-20250514` via `@anthropic-ai/sdk`
+- Updated `ai-advisor/tokenAnalyzer.ts` to integrate both Claude API suggestions and rule-based validation into a two-tier analysis system (`analyzeWithAI()`)
+- Created `scripts/demo-ai-advisor.js` — full demo script showing the end-to-end flow: user describes project → Claude API suggests parameters → rule-based validator checks → ready for deployment
+
+**Files**:
+- `ai-advisor/claudeAdvisor.ts` (new — 155 lines)
+- `ai-advisor/tokenAnalyzer.ts` (updated — added `analyzeWithAI()` and Claude imports)
+- `scripts/demo-ai-advisor.js` (new — 230 lines)
+
+#### Session 11: Documentation Wording Update
+**Goal**: Adopt factual, defensible wording for hackathon submission.
+
+**Changes**:
+- "AI agent" → "AI assistant" throughout
+- "optimal tokenomics" → "token parameters" / "token parameter suggestions"
+- "analyzes and suggests optimal tokenomics" → "analyzes project descriptions and suggests token parameters"
+- Added "AI Integration Details" section to README showing both Claude API calls
+- Updated SUBMISSION.md with accurate technical claims
+- Added `ANTHROPIC_API_KEY` to `.env.example`
+- Added `demo:ai` script to `package.json`
+
+**Files**:
+- `README.md` (rewritten)
+- `SUBMISSION.md` (rewritten)
+- `.env.example` (updated)
+- `package.json` (updated)
+
+---
+
 ## Final Statistics
 
 | Metric | Value |
 |--------|-------|
-| AI-assisted dev hours | ~4h |
+| AI-assisted dev hours | ~5h |
 | Smart Contract lines | ~162 |
-| AI Advisor lines | ~239 |
+| AI Advisor lines (rule-based) | ~239 |
+| AI Advisor lines (Claude API) | ~155 |
+| Demo script lines (AI advisor) | ~230 |
 | Frontend lines | ~581 |
 | Tests | AITokenFactory.test.js + AIVault.test.js |
 | Deployments | BSC Testnet + BSC Mainnet |
-| Verification | ✅ BscScan Verified |
+| Verification | BscScan Verified |
+| Claude API calls | 2 modules (claudeAdvisor + decision-engine) |
 
 ---
 
 ## Key Design Decisions (AI-Assisted)
 
 1. **Factory pattern** over individual deployment — enables tracking all tokens
-2. **Client-side AI** over backend — no API keys exposed, no server needed
+2. **Two-tier AI analysis** — Claude API for intelligent suggestions + rule-based validation for instant safety checks
 3. **User signs** all transactions — AI never touches funds
 4. **OpenZeppelin 5.x** — battle-tested, audited contracts
 5. **Events for transparency** — `TokenCreated` emitted for every deployment
+6. **Claude API in Token Factory flow** — real API call for token parameter suggestions, not just the vault module

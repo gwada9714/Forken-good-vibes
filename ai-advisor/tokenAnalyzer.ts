@@ -1,11 +1,14 @@
 /**
  * Token Analyzer - AI Advisor for Token Creation
- * 
- * This module runs ENTIRELY on the client side.
- * NO private keys, NO fund access, NO backend execution.
- * 
- * It only ANALYZES and SUGGESTS - the user decides and signs.
+ *
+ * Two-tier analysis system:
+ * 1. Rule-based validation (instant, client-side) — analyzeTokenParams()
+ * 2. Claude API suggestions (async, requires API key) — via ClaudeAdvisor
+ *
+ * The user always decides and signs. AI only advises.
  */
+
+import { ClaudeAdvisor, ClaudeAdvisorResponse, ProjectDescription } from './claudeAdvisor';
 
 export interface TokenParams {
     name: string;
@@ -25,6 +28,54 @@ export interface TokenAnalysis {
     suggestions: TokenSuggestion[];
     score: number; // 0-100, higher is better
     summary: string;
+}
+
+export interface FullAnalysis {
+    /** Instant rule-based validation */
+    validation: TokenAnalysis;
+    /** Claude API suggestion (null if API call failed or was skipped) */
+    aiSuggestion: ClaudeAdvisorResponse | null;
+}
+
+/**
+ * Full AI-assisted analysis: Claude suggests params, then rules validate them.
+ * This is the primary flow for the Token Factory.
+ *
+ * @param project - Natural language project description
+ * @param apiKey - Optional Anthropic API key (defaults to ANTHROPIC_API_KEY env var)
+ */
+export async function analyzeWithAI(
+    project: ProjectDescription,
+    apiKey?: string
+): Promise<FullAnalysis> {
+    const advisor = new ClaudeAdvisor(apiKey);
+    const aiResult = await advisor.suggestTokenParams(project);
+
+    let validation: TokenAnalysis;
+
+    if (aiResult.success && aiResult.suggestion) {
+        // Validate the AI-suggested parameters with rule-based checks
+        validation = analyzeTokenParams({
+            name: aiResult.suggestion.name,
+            symbol: aiResult.suggestion.symbol,
+            decimals: aiResult.suggestion.decimals,
+            initialSupply: aiResult.suggestion.initialSupply,
+        });
+    } else {
+        // AI failed — return empty validation
+        validation = {
+            isValid: false,
+            suggestions: [{
+                field: 'name',
+                type: 'error',
+                message: `AI analysis unavailable: ${aiResult.error || 'unknown error'}. Enter parameters manually.`,
+            }],
+            score: 0,
+            summary: 'AI analysis failed. Please enter parameters manually.',
+        };
+    }
+
+    return { validation, aiSuggestion: aiResult };
 }
 
 /**
@@ -237,3 +288,8 @@ export function formatSupply(supply: string | number): string {
     if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
     return num.toLocaleString();
 }
+
+// Re-export Claude advisor types for convenience
+export { ClaudeAdvisor, getAISuggestion } from './claudeAdvisor';
+export type { ClaudeAdvisorResponse, ProjectDescription } from './claudeAdvisor';
+export type { TokenSuggestion as ClaudeTokenSuggestion } from './claudeAdvisor';

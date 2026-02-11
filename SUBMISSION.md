@@ -6,13 +6,13 @@ Forken — AI-Powered No-Code Token Factory on BNB Chain
 
 ## One-liner
 
-No-code ERC-20 deployment on BNB Chain with AI-assisted tokenomics, clear on-chain proof, and builder-first UX.
+No-code ERC-20 deployment on BNB Chain with AI-assisted token parameter suggestions (Claude API), rule-based validation, and on-chain proof.
 
 ## Description
 
 Forken Token Factory is a minimal, reproducible no-code module to deploy ERC-20 tokens on BNB Chain.
 
-An AI agent (Claude) analyzes project descriptions and suggests optimal tokenomics (name, symbol, supply, decimals) before deployment. The user always signs with their own wallet — the AI only advises.
+An AI assistant (Claude API) analyzes project descriptions in natural language and suggests token parameters (name, symbol, supply, decimals) before deployment. A rule-based validator then checks the suggestions for safety (length, reserved symbols, suspicious patterns). The user always reviews, adjusts, and signs with their own wallet — the AI only suggests.
 
 This submission focuses on safe token deployment and on-chain verifiability (contract address + tx hash).
 
@@ -20,17 +20,27 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 
 ### Key Features
 
-- AI-assisted tokenomics analysis (Claude API)
+- Claude API integration for token parameter suggestions from natural language descriptions
+- Rule-based parameter validation (score 0-100, actionable suggestions)
 - No-code ERC-20 deployment on BSC
 - On-chain proof: verified contract + tx hash
 - User owns the token (not the factory or any agent)
 - Fully reproducible: `npm install && npx hardhat test && deploy`
 
+### AI Integration
+
+The Token Factory flow calls the Claude API (`claude-sonnet-4-20250514` via `@anthropic-ai/sdk`) to:
+1. Accept a project description in natural language
+2. Return structured token parameters (name, symbol, decimals, supply) with reasoning
+3. Provide alternative name/symbol suggestions
+
+This is a real API call — see `ai-advisor/claudeAdvisor.ts` and the demo script `scripts/demo-ai-advisor.js`.
+
 ### Tech Stack
 
 - Solidity 0.8.24 + OpenZeppelin 5.x
 - Hardhat + ethers.js
-- Claude API (Anthropic) for AI decisions
+- Claude API (Anthropic) — `@anthropic-ai/sdk`
 - BSC Mainnet (chainId: 56)
 
 ## Track
@@ -52,12 +62,12 @@ Liquidity provisioning, token launch, fundraising, airdrops, and any market-faci
 ## Build-in-Public Tweet (Optional)
 
 ```
-🔨 Built Forken Token Factory for @BNBChain #GoodVibesOnly hackathon
+Built Forken Token Factory for @BNBChain #GoodVibesOnly hackathon
 
 AI-assisted no-code ERC-20 deployment on BSC.
-→ Claude analyzes your project
-→ Suggests optimal tokenomics
-→ Deploys with on-chain proof
+- Describe your project in natural language
+- Claude API suggests token parameters
+- Review, adjust, deploy with on-chain proof
 
 No liquidity. No launch. Builder tool only.
 
