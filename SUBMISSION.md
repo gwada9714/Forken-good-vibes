@@ -66,7 +66,7 @@ This is a real API call present in two execution paths:
 - **GitHub (main Forken app)**: https://github.com/gwada9714/Forken
 - **AI Build Log**: [AI_BUILD_LOG.md](./AI_BUILD_LOG.md) — 12 sessions documented with AI contributions
 - **Demo Video**: [TODO: add demo video link]
-- **Live App**: [TODO: add deployed frontend URL if applicable]
+- **Live App**: https://forken.io (homepage — click the hackathon button to access AI Token Creator)
 
 ## Reproducibility
 
