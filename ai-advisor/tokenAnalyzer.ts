@@ -3,12 +3,12 @@
  *
  * Two-tier analysis system:
  * 1. Rule-based validation (instant, client-side) — analyzeTokenParams()
- * 2. Claude API suggestions (async, requires API key) — via ClaudeAdvisor
+ * 2. Gemini API suggestions (async, requires free API key) — via GeminiAdvisor
  *
  * The user always decides and signs. AI only advises.
  */
 
-import { ClaudeAdvisor, ClaudeAdvisorResponse, ProjectDescription } from './claudeAdvisor';
+import { GeminiAdvisor, AIAdvisorResponse, ProjectDescription } from './geminiAdvisor';
 
 export interface TokenParams {
     name: string;
@@ -17,7 +17,7 @@ export interface TokenParams {
     initialSupply: string;
 }
 
-export interface TokenSuggestion {
+export interface ValidationSuggestion {
     field: 'name' | 'symbol' | 'decimals' | 'initialSupply';
     type: 'warning' | 'suggestion' | 'info' | 'error';
     message: string;
@@ -25,7 +25,7 @@ export interface TokenSuggestion {
 
 export interface TokenAnalysis {
     isValid: boolean;
-    suggestions: TokenSuggestion[];
+    suggestions: ValidationSuggestion[];
     score: number; // 0-100, higher is better
     summary: string;
 }
@@ -33,22 +33,22 @@ export interface TokenAnalysis {
 export interface FullAnalysis {
     /** Instant rule-based validation */
     validation: TokenAnalysis;
-    /** Claude API suggestion (null if API call failed or was skipped) */
-    aiSuggestion: ClaudeAdvisorResponse | null;
+    /** Gemini API suggestion (null if API call failed or was skipped) */
+    aiSuggestion: AIAdvisorResponse | null;
 }
 
 /**
- * Full AI-assisted analysis: Claude suggests params, then rules validate them.
+ * Full AI-assisted analysis: Gemini suggests params, then rules validate them.
  * This is the primary flow for the Token Factory.
  *
  * @param project - Natural language project description
- * @param apiKey - Optional Anthropic API key (defaults to ANTHROPIC_API_KEY env var)
+ * @param apiKey - Optional Google AI API key (defaults to GOOGLE_AI_API_KEY env var)
  */
 export async function analyzeWithAI(
     project: ProjectDescription,
     apiKey?: string
 ): Promise<FullAnalysis> {
-    const advisor = new ClaudeAdvisor(apiKey);
+    const advisor = new GeminiAdvisor(apiKey);
     const aiResult = await advisor.suggestTokenParams(project);
 
     let validation: TokenAnalysis;
@@ -79,10 +79,10 @@ export async function analyzeWithAI(
 }
 
 /**
- * Analyze token parameters and provide AI-like suggestions
+ * Analyze token parameters and provide rule-based suggestions
  */
 export function analyzeTokenParams(params: TokenParams): TokenAnalysis {
-    const suggestions: TokenSuggestion[] = [];
+    const suggestions: ValidationSuggestion[] = [];
     let score = 100;
 
     // ============ NAME ANALYSIS ============
@@ -289,7 +289,7 @@ export function formatSupply(supply: string | number): string {
     return num.toLocaleString();
 }
 
-// Re-export Claude advisor types for convenience
-export { ClaudeAdvisor, getAISuggestion } from './claudeAdvisor';
-export type { ClaudeAdvisorResponse, ProjectDescription } from './claudeAdvisor';
-export type { TokenSuggestion as ClaudeTokenSuggestion } from './claudeAdvisor';
+// Re-export Gemini advisor types for convenience
+export { GeminiAdvisor, getAISuggestion } from './geminiAdvisor';
+export type { AIAdvisorResponse, ProjectDescription } from './geminiAdvisor';
+export type { TokenSuggestion as AITokenSuggestion } from './geminiAdvisor';

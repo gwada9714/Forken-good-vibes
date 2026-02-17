@@ -114,8 +114,7 @@ contract AIVault is ReentrancyGuard, Ownable, Pausable {
         
         IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
         
-        deposits[msg.sender].amount += amount;
-        deposits[msg.sender].depositTime = block.timestamp;
+        // Note: deposits[].amount only tracks BNB; ERC-20 balances are in userTokenBalances
         deposits[msg.sender].lastActionTime = block.timestamp;
         
         userTokenBalances[msg.sender][token] += amount;
@@ -149,8 +148,8 @@ contract AIVault is ReentrancyGuard, Ownable, Pausable {
     function withdrawToken(address token, uint256 amount) external nonReentrant {
         require(userTokenBalances[msg.sender][token] >= amount, "AIVault: insufficient balance");
         
+        // Note: deposits[].amount only tracks BNB; ERC-20 uses userTokenBalances only
         userTokenBalances[msg.sender][token] -= amount;
-        deposits[msg.sender].amount -= amount;
         totalValueLocked -= amount;
         
         IERC20(token).safeTransfer(msg.sender, amount);

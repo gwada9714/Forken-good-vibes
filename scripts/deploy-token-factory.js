@@ -61,7 +61,9 @@ async function main() {
     console.log("🎉 DEPLOYMENT COMPLETE!");
     console.log("════════════════════════════════════════════════════════════");
     console.log("AITokenFactory:", factoryAddress);
-    console.log("BscScan:", `https://testnet.bscscan.com/address/${factoryAddress}`);
+    const isMainnet = hre.network.name === 'bscMainnet' || hre.network.name === 'bsc';
+    const bscScanBase = isMainnet ? 'https://bscscan.com' : 'https://testnet.bscscan.com';
+    console.log("BscScan:", `${bscScanBase}/address/${factoryAddress}`);
     console.log("════════════════════════════════════════════════════════════\n");
 
     return factoryAddress;

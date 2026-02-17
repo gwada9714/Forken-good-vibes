@@ -1,5 +1,5 @@
 {
-    "name": "forken-ai-vault",
+    "name": "forken-token-factory",
     "version": "1.0.0",
     "description": "AI-powered autonomous treasury management vault - BNB Good Vibes Only Hackathon",
     "type": "commonjs",
@@ -28,17 +28,18 @@
         "@nomicfoundation/hardhat-ethers": "^3.1.3",
         "@nomicfoundation/hardhat-network-helpers": "^1.1.2",
         "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-        "@nomicfoundation/hardhat-verify": "^2.1.3",
+        "@nomicfoundation/hardhat-verify": "^2.0.3",
         "@openzeppelin/contracts": "^5.4.0",
         "@typechain/ethers-v6": "^0.5.1",
         "@typechain/hardhat": "^9.1.0",
         "chai": "^4.5.0",
         "hardhat": "^2.19.0",
         "hardhat-gas-reporter": "^1.0.10",
-        "solidity-coverage": "^0.8.17"
+        "solidity-coverage": "^0.8.17",
+        "ts-node": "^10.9.1"
     },
     "dependencies": {
-        "@anthropic-ai/sdk": "^0.20.0",
+        "@google/generative-ai": "^0.21.0",
         "dotenv": "^16.3.1",
         "ethers": "^6.9.0"
     }

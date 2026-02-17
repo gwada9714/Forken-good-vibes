@@ -5,7 +5,7 @@
 
 ![BSC](https://img.shields.io/badge/BSC-F0B90B?style=flat&logo=binance&logoColor=white)
 ![Solidity](https://img.shields.io/badge/Solidity-%5E0.8.20-363636?style=flat&logo=solidity)
-![AI Powered](https://img.shields.io/badge/AI-Claude_API-blueviolet?style=flat)
+![AI Powered](https://img.shields.io/badge/AI-Gemini_Free-blueviolet?style=flat)
 ![Tests](https://img.shields.io/badge/Tests-passing-brightgreen?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
 
@@ -47,13 +47,13 @@ npx hardhat test
 
 Forken Token Factory is a **minimal, reproducible no-code module** to deploy ERC-20 tokens on BNB Chain.
 
-An AI assistant (Claude API) analyzes a user's project description and suggests token parameters (name, symbol, supply, decimals) before deployment. The user always reviews, adjusts, and signs with their own wallet — the AI only suggests.
+An AI assistant (Gemini API — **free tier**) analyzes a user's project description and suggests token parameters (name, symbol, supply, decimals) before deployment. The user always reviews, adjusts, and signs with their own wallet — the AI only suggests.
 
 ### How It Works
 
 ```
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│  User Input  │────>│  Claude API  │────>│  Validator   │────>│  On-Chain    │
+│  User Input  │────>│  Gemini API  │────>│  Validator   │────>│  On-Chain    │
 │  "I want a   │     │  Suggests    │     │  Rule-based  │     │  Factory     │
 │   token for  │     │  Token       │     │  Parameter   │     │  Deploys     │
 │   my game"   │     │  Parameters  │     │  Checks      │     │  ERC-20      │
@@ -61,7 +61,7 @@ An AI assistant (Claude API) analyzes a user's project description and suggests 
 ```
 
 1. **User describes** their project in natural language
-2. **Claude API analyzes** the description and suggests name, symbol, supply, decimals
+2. **Gemini API analyzes** (free tier) the description and suggests name, symbol, supply, decimals
 3. **Rule-based validator** checks parameters (length, reserved symbols, suspicious patterns)
 4. **User reviews** and approves or adjusts the parameters
 5. **Factory deploys** the ERC-20 on BNB Chain
@@ -70,24 +70,24 @@ An AI assistant (Claude API) analyzes a user's project description and suggests 
 ### Key Principles
 - **No agent private key** — user always signs
 - **No fund management** — factory only creates tokens
-- **Two-tier analysis** — Claude API for suggestions + rule-based validation for safety
+- **Two-tier analysis** — Gemini API (free) for suggestions + rule-based validation for safety
 - **On-chain verifiable** — everything visible on BSCScan
 
 ---
 
 ## AI Integration Details
 
-The AI layer uses the **Claude API** (Anthropic) at two levels:
+The AI layer uses the **Gemini API** (Google — **free tier**) at two levels:
 
-### 1. Claude API — Token Parameter Suggestions (`ai-advisor/claudeAdvisor.ts`)
+### 1. Gemini API — Token Parameter Suggestions (`ai-advisor/geminiAdvisor.ts`)
 - Takes a natural language project description
-- Calls `claude-sonnet-4-20250514` via `@anthropic-ai/sdk`
+- Calls `gemini-2.0-flash` via `@google/generative-ai` (free)
 - Returns structured JSON: name, symbol, decimals, supply, reasoning, alternatives
 - Used in the Token Factory flow (the main submission)
 
-### 2. Claude API — DeFi Decision Engine (`ai-agent/decision-engine.ts`)
+### 2. Gemini API — DeFi Decision Engine (`ai-agent/decision-engine.ts`)
 - Analyzes DeFi market conditions for the AI Vault (bonus module)
-- Calls `claude-3-sonnet-20240229` for stake/unstake/compound decisions
+- Calls `gemini-2.0-flash` for stake/unstake/compound decisions
 - Not part of the core Token Factory flow
 
 ### 3. Rule-Based Validator (`ai-advisor/tokenAnalyzer.ts`)
@@ -98,7 +98,7 @@ The AI layer uses the **Claude API** (Anthropic) at two levels:
 ### Demo
 
 ```bash
-# Run the AI advisor demo (requires ANTHROPIC_API_KEY in .env)
+# Run the AI advisor demo (requires GOOGLE_AI_API_KEY in .env — free at https://aistudio.google.com/)
 npm run demo:ai
 
 # Or with a custom project description
@@ -117,18 +117,19 @@ good vibes/
 │   └── StrategyExecutor.sol   # Strategy executor (bonus)
 │
 ├── ai-advisor/                # AI advisory layer
-│   ├── claudeAdvisor.ts       # Claude API integration (token suggestions)
+│   ├── geminiAdvisor.ts       # Gemini API integration (token suggestions — FREE)
 │   └── tokenAnalyzer.ts       # Rule-based validator + AI orchestrator
 │
-├── ai-agent/                  # AI Backend (Claude API — vault module)
+├── ai-agent/                  # AI Backend (Gemini API — vault module)
 │   ├── index.ts               # Entry point
-│   ├── decision-engine.ts     # Claude integration (DeFi decisions)
+│   ├── decision-engine.ts     # Gemini integration (DeFi decisions)
+│   ├── executor.ts            # On-chain transaction executor
 │   └── risk-analyzer.ts       # Risk analysis
 │
 ├── scripts/
 │   ├── deploy-token-factory.js     # Deploy script
 │   ├── demo-token.js               # Demo: create a token
-│   ├── demo-ai-advisor.js          # Demo: Claude API token suggestions
+│   ├── demo-ai-advisor.js          # Demo: Gemini API token suggestions (FREE)
 │   └── create-demo-token-mainnet.js
 │
 ├── test/
@@ -147,7 +148,7 @@ good vibes/
 ### Prerequisites
 - Node.js 18+
 - npm
-- Anthropic API key (for AI features)
+- Google AI API key — **free** at [aistudio.google.com](https://aistudio.google.com/)
 
 ### Install & Compile
 
@@ -166,7 +167,7 @@ npx hardhat test
 
 ```bash
 cp .env.example .env
-# Edit .env with your ANTHROPIC_API_KEY
+# Edit .env with your GOOGLE_AI_API_KEY (free at https://aistudio.google.com/)
 npm run demo:ai
 ```
 
@@ -189,7 +190,7 @@ npx hardhat run scripts/demo-token.js --network bscTestnet
 
 - **Smart Contracts**: Solidity 0.8.24, OpenZeppelin 5.x
 - **Framework**: Hardhat
-- **AI**: Claude API (Anthropic) — `@anthropic-ai/sdk`
+- **AI**: Gemini API (Google — **FREE**) — `@google/generative-ai`
 - **Blockchain**: BNB Smart Chain (BSC)
 - **Testing**: Chai + Hardhat Network
 

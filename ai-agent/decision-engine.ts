@@ -1,12 +1,11 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { ethers } from 'ethers';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 /**
  * AI Decision Engine for ForKen AI Vault
- * Uses Claude to analyze market conditions and make DeFi decisions
+ * Uses Gemini (free tier) to analyze market conditions and make DeFi decisions
  */
 
 interface PoolInfo {
@@ -18,7 +17,7 @@ interface PoolInfo {
     lockDuration: number;
 }
 
-interface Decision {
+export interface Decision {
     action: 'stake' | 'unstake' | 'compound' | 'bridge' | 'hold';
     poolId?: number;
     amount?: string;
@@ -36,18 +35,17 @@ interface MarketContext {
 }
 
 export class DecisionEngine {
-    private anthropic: Anthropic;
+    private genAI: GoogleGenerativeAI;
+    private modelName: string;
     private riskTolerance: number;
 
     constructor() {
-        if (!process.env.ANTHROPIC_API_KEY) {
-            throw new Error('ANTHROPIC_API_KEY not set');
+        if (!process.env.GOOGLE_AI_API_KEY) {
+            throw new Error('GOOGLE_AI_API_KEY not set. Get a free key at https://aistudio.google.com/');
         }
 
-        this.anthropic = new Anthropic({
-            apiKey: process.env.ANTHROPIC_API_KEY,
-        });
-
+        this.genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+        this.modelName = 'gemini-2.0-flash';
         this.riskTolerance = parseInt(process.env.RISK_TOLERANCE || '5');
     }
 
@@ -58,23 +56,12 @@ export class DecisionEngine {
         const prompt = this.buildPrompt(context);
 
         try {
-            const response = await this.anthropic.messages.create({
-                model: 'claude-3-sonnet-20240229',
-                max_tokens: 1024,
-                messages: [
-                    {
-                        role: 'user',
-                        content: prompt,
-                    },
-                ],
-            });
+            const model = this.genAI.getGenerativeModel({ model: this.modelName });
+            const result = await model.generateContent(prompt);
+            const response = result.response;
+            const text = response.text();
 
-            const content = response.content[0];
-            if (content.type !== 'text') {
-                throw new Error('Unexpected response type');
-            }
-
-            return this.parseDecision(content.text);
+            return this.parseDecision(text);
         } catch (error) {
             console.error('AI analysis failed:', error);
             // Default to holding if AI fails
@@ -116,7 +103,7 @@ Consider:
 3. Lock duration constraints
 4. Diversification benefits
 
-Respond in this EXACT JSON format:
+Respond in this EXACT JSON format (no markdown, no code blocks, just raw JSON):
 {
   "action": "stake" | "unstake" | "compound" | "bridge" | "hold",
   "poolId": <number if applicable>,

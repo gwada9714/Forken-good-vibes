@@ -6,13 +6,13 @@ Forken — AI-Powered No-Code Token Factory on BNB Chain
 
 ## One-liner
 
-No-code ERC-20 deployment on BNB Chain with AI-assisted token parameter suggestions (Claude API), rule-based validation, and on-chain proof.
+No-code ERC-20 deployment on BNB Chain with AI-assisted token parameter suggestions (Gemini API — **free**), rule-based validation, and on-chain proof.
 
 ## Description
 
 Forken Token Factory is a minimal, reproducible no-code module to deploy ERC-20 tokens on BNB Chain.
 
-An AI assistant (Claude API) analyzes project descriptions in natural language and suggests token parameters (name, symbol, supply, decimals) before deployment. A rule-based validator then checks the suggestions for safety (length, reserved symbols, suspicious patterns). The user always reviews, adjusts, and signs with their own wallet — the AI only suggests.
+An AI assistant (Gemini API — **free tier**) analyzes project descriptions in natural language and suggests token parameters (name, symbol, supply, decimals) before deployment. A rule-based validator then checks the suggestions for safety (length, reserved symbols, suspicious patterns). The user always reviews, adjusts, and signs with their own wallet — the AI only suggests.
 
 This submission focuses on safe token deployment and on-chain verifiability (contract address + tx hash).
 
@@ -20,7 +20,7 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 
 ### Key Features
 
-- Claude API integration for token parameter suggestions from natural language descriptions
+- Gemini API integration (**free**) for token parameter suggestions from natural language descriptions
 - Rule-based parameter validation (score 0-100, actionable suggestions)
 - No-code ERC-20 deployment on BSC
 - On-chain proof: verified contract + tx hash
@@ -29,20 +29,20 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 
 ### AI Integration
 
-The Token Factory flow calls the Claude API (`claude-sonnet-4-20250514` via `@anthropic-ai/sdk`) to:
+The Token Factory flow calls the Gemini API (`gemini-2.0-flash` via `@google/generative-ai` — **free tier**) to:
 1. Accept a project description in natural language
 2. Return structured token parameters (name, symbol, decimals, supply) with reasoning
 3. Provide alternative name/symbol suggestions
 
 This is a real API call present in two execution paths:
-- **Backend**: `ai-advisor/claudeAdvisor.ts` + demo script `scripts/demo-ai-advisor.js`
-- **Frontend**: `src/services/ai/claudeTokenAdvisor.ts` → called from `AITokenCreatorPage.tsx` via "Ask AI" button (Vite proxy to Anthropic API)
+- **Backend**: `ai-advisor/geminiAdvisor.ts` + demo script `scripts/demo-ai-advisor.js`
+- **Frontend**: `src/services/ai/claudeTokenAdvisor.ts` → called from `AITokenCreatorPage.tsx` via "Ask AI" button
 
 ### Tech Stack
 
 - Solidity 0.8.24 + OpenZeppelin 5.x
 - Hardhat + ethers.js
-- Claude API (Anthropic) — `@anthropic-ai/sdk`
+- Gemini API (Google — **FREE**) — `@google/generative-ai`
 - React + TypeScript + Tailwind CSS + Framer Motion
 - BSC Mainnet (chainId: 56)
 
@@ -76,13 +76,13 @@ git clone https://github.com/gwada9714/Forken-good-vibes.git
 cd Forken-good-vibes
 npm install
 
-# Compile and run tests (32 tests)
+# Compile and run tests
 npx hardhat compile
 npx hardhat test
 
-# Run AI advisor demo (requires ANTHROPIC_API_KEY in .env)
+# Run AI advisor demo (requires GOOGLE_AI_API_KEY in .env — free at https://aistudio.google.com/)
 cp .env.example .env
-# Edit .env with your ANTHROPIC_API_KEY
+# Edit .env with your GOOGLE_AI_API_KEY
 npm run demo:ai
 
 # Or with a custom project description
@@ -100,7 +100,7 @@ Built Forken Token Factory for @BNBChain #GoodVibesOnly hackathon
 
 AI-assisted no-code ERC-20 deployment on BSC.
 - Describe your project in natural language
-- Claude API suggests token parameters
+- Gemini API (free) suggests token parameters
 - Review, adjust, deploy with on-chain proof
 
 No liquidity. No launch. Builder tool only.

@@ -3,7 +3,7 @@
  *
  * This script demonstrates the complete Token Factory flow:
  * 1. User describes their project in natural language
- * 2. Claude API analyzes the description and suggests token parameters
+ * 2. Gemini API (free) analyzes the description and suggests token parameters
  * 3. Rule-based analyzer validates the AI suggestions
  * 4. Parameters are ready for on-chain deployment
  *
@@ -11,26 +11,27 @@
  *   node scripts/demo-ai-advisor.js
  *   node scripts/demo-ai-advisor.js "I want a token for my online gaming platform"
  *
- * Requires: ANTHROPIC_API_KEY in .env
+ * Requires: GOOGLE_AI_API_KEY in .env (free at https://aistudio.google.com/)
  */
 
-const Anthropic = require('@anthropic-ai/sdk').default;
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-// ============ Claude Advisor (inline for demo, see ai-advisor/claudeAdvisor.ts for full module) ============
+// ============ Gemini Advisor (inline for demo, see ai-advisor/geminiAdvisor.ts for full module) ============
 
-async function askClaude(projectDescription, options = {}) {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+async function askGemini(projectDescription, options = {}) {
+    const apiKey = process.env.GOOGLE_AI_API_KEY;
     if (!apiKey) {
-        console.error('❌ ANTHROPIC_API_KEY not set in .env');
-        console.error('   Add your key to .env: ANTHROPIC_API_KEY=sk-ant-...');
+        console.error('❌ GOOGLE_AI_API_KEY not set in .env');
+        console.error('   Get a free key at: https://aistudio.google.com/');
+        console.error('   Add it to .env: GOOGLE_AI_API_KEY=your_key_here');
         process.exit(1);
     }
 
-    const anthropic = new Anthropic({ apiKey });
-    const model = 'claude-sonnet-4-20250514';
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const modelName = 'gemini-2.0-flash';
 
     let prompt = `You are an AI assistant helping users create ERC-20 tokens on BNB Chain.
 
@@ -69,21 +70,15 @@ Respond in this EXACT JSON format (no markdown, no code blocks, just raw JSON):
   ]
 }`;
 
-    const response = await anthropic.messages.create({
-        model,
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }],
-    });
-
-    const content = response.content[0];
-    if (content.type !== 'text') {
-        throw new Error('Unexpected response type');
-    }
+    const model = genAI.getGenerativeModel({ model: modelName });
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text();
 
     // Extract JSON
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-        throw new Error('No JSON found in Claude response');
+        throw new Error('No JSON found in Gemini response');
     }
 
     const suggestion = JSON.parse(jsonMatch[0]);
@@ -97,11 +92,11 @@ Respond in this EXACT JSON format (no markdown, no code blocks, just raw JSON):
             reasoning: String(suggestion.reasoning || ''),
             alternatives: suggestion.alternatives || [],
         },
-        model,
-        usage: {
-            inputTokens: response.usage.input_tokens,
-            outputTokens: response.usage.output_tokens,
-        },
+        model: modelName,
+        usage: response.usageMetadata ? {
+            inputTokens: response.usageMetadata.promptTokenCount || 0,
+            outputTokens: response.usageMetadata.candidatesTokenCount || 0,
+        } : { inputTokens: 0, outputTokens: 0 },
     };
 }
 
@@ -225,7 +220,7 @@ const DEMO_SCENARIOS = [
 async function main() {
     console.log('╔════════════════════════════════════════════════════════════╗');
     console.log('║     Forken Token Factory — AI-Assisted Token Creation      ║');
-    console.log('║     Claude API Integration Demo                            ║');
+    console.log('║     Gemini API Integration Demo (FREE)                     ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 
     // Get project description from CLI args or use demo scenario
@@ -249,12 +244,12 @@ async function main() {
     if (scenario.useCase) console.log(`  Use case: ${scenario.useCase}`);
 
     console.log('\n┌─────────────────────────────────────────────────┐');
-    console.log('│  STEP 2: Claude API Analyzes & Suggests         │');
+    console.log('│  STEP 2: Gemini API Analyzes & Suggests (FREE)  │');
     console.log('└─────────────────────────────────────────────────┘\n');
-    console.log('  Calling Claude API...\n');
+    console.log('  Calling Gemini API...\n');
 
     const startTime = Date.now();
-    const result = await askClaude(scenario.description, {
+    const result = await askGemini(scenario.description, {
         targetAudience: scenario.targetAudience,
         useCase: scenario.useCase,
     });
@@ -262,7 +257,7 @@ async function main() {
 
     const { suggestion, model, usage } = result;
 
-    console.log(`  Model: ${model}`);
+    console.log(`  Model: ${model} (FREE tier)`);
     console.log(`  Response time: ${elapsed}ms`);
     console.log(`  Tokens used: ${usage.inputTokens} in / ${usage.outputTokens} out\n`);
 
@@ -327,8 +322,9 @@ async function main() {
     }
 
     console.log('\n════════════════════════════════════════════════════════════');
-    console.log('  Demo complete. Claude API was called in the Token Factory');
-    console.log('  flow to generate token parameters from a project description.');
+    console.log('  Demo complete. Gemini API (FREE) was called in the Token');
+    console.log('  Factory flow to generate token parameters from a project');
+    console.log('  description.');
     console.log('════════════════════════════════════════════════════════════\n');
 }
 

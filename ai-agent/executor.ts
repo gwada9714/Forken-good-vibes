@@ -1,6 +1,6 @@
 import { ethers, Contract, Wallet } from 'ethers';
 import * as dotenv from 'dotenv';
-import { getDecisionEngine, type Decision } from './decision-engine';
+import type { Decision } from './decision-engine';
 
 dotenv.config();
 
