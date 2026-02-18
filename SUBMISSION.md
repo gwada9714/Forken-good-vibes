@@ -44,7 +44,7 @@ This is a real API call present in two execution paths:
 - Hardhat + ethers.js
 - Gemini API (Google — **FREE**) — `@google/generative-ai`
 - React + TypeScript + Tailwind CSS + Framer Motion
-- BSC Mainnet (chainId: 56)
+- BSC Testnet (chainId: 97)
 
 ## Track
 
@@ -54,11 +54,10 @@ This is a real API call present in two execution paths:
 
 | Item | Link |
 |---|---|
-| **Token Factory (Verified)** | https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
-| **Demo Token (FKD)** | https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881 |
-| **Demo TX** | https://bscscan.com/tx/0x6f90f4871d44494493bb18ab9955889d0c128179e33e7b97a9cbc04799299815 |
+| **AI Vault (Verified)** | https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
+| **Strategy Executor (Verified)** | https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code |
 | **Deployer** | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24` |
-| **Network** | BSC Mainnet (chainId: 56) |
+| **Network** | BSC Testnet (chainId: 97) |
 
 ## Links
 

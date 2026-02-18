@@ -1,206 +1,206 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
-import { useWallet } from '../../../src/contexts/WalletContext';
+import { useWallet } from '../../src/contexts/WalletContext';
 import VaultDeposit from './components/VaultDeposit';
 import VaultHistory from './components/VaultHistory';
 import AIDecisionLog from './components/AIDecisionLog';
 
 // Contract ABI (simplified)
 const AI_VAULT_ABI = [
-    'function deposit() external payable',
-    'function withdraw(uint256 amount) external',
-    'function getUserTokenBalance(address user, address token) external view returns (uint256)',
-    'function totalValueLocked() external view returns (uint256)',
-    'function getActionCount() external view returns (uint256)',
-    'function getRecentActions(uint256 count) external view returns (tuple(uint8 actionType, address target, uint256 amount, uint256 timestamp, string reasoning)[])',
+  'function deposit() external payable',
+  'function withdraw(uint256 amount) external',
+  'function getUserTokenBalance(address user, address token) external view returns (uint256)',
+  'function totalValueLocked() external view returns (uint256)',
+  'function getActionCount() external view returns (uint256)',
+  'function getRecentActions(uint256 count) external view returns (tuple(uint8 actionType, address target, uint256 amount, uint256 timestamp, string reasoning)[])',
 ];
 
 interface VaultStats {
-    tvl: string;
-    userBalance: string;
-    actionCount: number;
+  tvl: string;
+  userBalance: string;
+  actionCount: number;
 }
 
 interface AIAction {
-    actionType: number;
-    target: string;
-    amount: string;
-    timestamp: number;
-    reasoning: string;
+  actionType: number;
+  target: string;
+  amount: string;
+  timestamp: number;
+  reasoning: string;
 }
 
 const AIVaultPage: React.FC = () => {
-    const { address, isConnected, provider } = useWallet();
-    const [stats, setStats] = useState<VaultStats>({ tvl: '0', userBalance: '0', actionCount: 0 });
-    const [recentActions, setRecentActions] = useState<AIAction[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
+  const { address, isConnected, provider } = useWallet();
+  const [stats, setStats] = useState<VaultStats>({ tvl: '0', userBalance: '0', actionCount: 0 });
+  const [recentActions, setRecentActions] = useState<AIAction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-    const vaultAddress = import.meta.env.VITE_AI_VAULT_ADDRESS || '';
+  const vaultAddress = import.meta.env.VITE_AI_VAULT_ADDRESS || '';
 
-    const loadVaultData = useCallback(async () => {
-        if (!provider || !vaultAddress) {
-            setLoading(false);
-            return;
-        }
-
-        try {
-            const contract = new ethers.Contract(vaultAddress, AI_VAULT_ABI, provider);
-
-            // Get TVL
-            const tvl = await contract.totalValueLocked();
-
-            // Get user balance if connected
-            let userBalance = ethers.parseEther('0');
-            if (address) {
-                userBalance = await contract.getUserTokenBalance(address, ethers.ZeroAddress);
-            }
-
-            // Get action count
-            const actionCount = await contract.getActionCount();
-
-            setStats({
-                tvl: ethers.formatEther(tvl),
-                userBalance: ethers.formatEther(userBalance),
-                actionCount: Number(actionCount),
-            });
-
-            // Get recent actions
-            if (actionCount > 0) {
-                const actions = await contract.getRecentActions(Math.min(10, Number(actionCount)));
-                setRecentActions(actions.map((a: any) => ({
-                    actionType: Number(a.actionType),
-                    target: a.target,
-                    amount: ethers.formatEther(a.amount),
-                    timestamp: Number(a.timestamp),
-                    reasoning: a.reasoning,
-                })));
-            }
-        } catch (error) {
-            console.error('Failed to load vault data:', error);
-        } finally {
-            setLoading(false);
-            setRefreshing(false);
-        }
-    }, [provider, vaultAddress, address]);
-
-    useEffect(() => {
-        loadVaultData();
-    }, [loadVaultData]);
-
-    const handleRefresh = () => {
-        setRefreshing(true);
-        loadVaultData();
-    };
-
-    const getActionTypeName = (type: number): string => {
-        const types = ['Stake', 'Unstake', 'Compound', 'Bridge'];
-        return types[type] || 'Unknown';
-    };
-
-    if (!vaultAddress) {
-        return (
-            <div className="ai-vault-page">
-                <div className="error-message">
-                    <h2>⚠️ Vault Not Configured</h2>
-                    <p>Please set VITE_AI_VAULT_ADDRESS in your environment variables.</p>
-                </div>
-            </div>
-        );
+  const loadVaultData = useCallback(async () => {
+    if (!provider || !vaultAddress) {
+      setLoading(false);
+      return;
     }
 
+    try {
+      const contract = new ethers.Contract(vaultAddress, AI_VAULT_ABI, provider);
+
+      // Get TVL
+      const tvl = await contract.totalValueLocked();
+
+      // Get user balance if connected
+      let userBalance = ethers.parseEther('0');
+      if (address) {
+        userBalance = await contract.getUserTokenBalance(address, ethers.ZeroAddress);
+      }
+
+      // Get action count
+      const actionCount = await contract.getActionCount();
+
+      setStats({
+        tvl: ethers.formatEther(tvl),
+        userBalance: ethers.formatEther(userBalance),
+        actionCount: Number(actionCount),
+      });
+
+      // Get recent actions
+      if (actionCount > 0) {
+        const actions = await contract.getRecentActions(Math.min(10, Number(actionCount)));
+        setRecentActions(actions.map((a: any) => ({
+          actionType: Number(a.actionType),
+          target: a.target,
+          amount: ethers.formatEther(a.amount),
+          timestamp: Number(a.timestamp),
+          reasoning: a.reasoning,
+        })));
+      }
+    } catch (error) {
+      console.error('Failed to load vault data:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [provider, vaultAddress, address]);
+
+  useEffect(() => {
+    loadVaultData();
+  }, [loadVaultData]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    loadVaultData();
+  };
+
+  const getActionTypeName = (type: number): string => {
+    const types = ['Stake', 'Unstake', 'Compound', 'Bridge'];
+    return types[type] || 'Unknown';
+  };
+
+  if (!vaultAddress) {
     return (
-        <div className="ai-vault-page">
-            {/* Header */}
-            <header className="vault-header">
-                <div className="header-content">
-                    <h1>🤖 ForKen AI Vault</h1>
-                    <p className="subtitle">Autonomous Treasury Management</p>
-                    <div className="hackathon-badge">
-                        BNB Good Vibes Only: OpenClaw Edition
-                    </div>
-                </div>
-                <button
-                    className="refresh-btn"
-                    onClick={handleRefresh}
-                    disabled={refreshing}
-                >
-                    {refreshing ? '⏳' : '🔄'} Refresh
-                </button>
-            </header>
+      <div className="ai-vault-page">
+        <div className="error-message">
+          <h2>⚠️ Vault Not Configured</h2>
+          <p>Please set VITE_AI_VAULT_ADDRESS in your environment variables.</p>
+        </div>
+      </div>
+    );
+  }
 
-            {/* Stats Grid */}
-            <section className="stats-grid">
-                <div className="stat-card">
-                    <span className="stat-label">Total Value Locked</span>
-                    <span className="stat-value">{parseFloat(stats.tvl).toFixed(4)} BNB</span>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-label">Your Balance</span>
-                    <span className="stat-value">
-                        {isConnected ? `${parseFloat(stats.userBalance).toFixed(4)} BNB` : 'Connect Wallet'}
-                    </span>
-                </div>
-                <div className="stat-card">
-                    <span className="stat-label">AI Actions Executed</span>
-                    <span className="stat-value">{stats.actionCount}</span>
-                </div>
-                <div className="stat-card status-card">
-                    <span className="stat-label">Agent Status</span>
-                    <span className="stat-value status-active">🟢 Active</span>
-                </div>
-            </section>
+  return (
+    <div className="ai-vault-page">
+      {/* Header */}
+      <header className="vault-header">
+        <div className="header-content">
+          <h1>🤖 ForKen AI Vault</h1>
+          <p className="subtitle">Autonomous Treasury Management</p>
+          <div className="hackathon-badge">
+            BNB Good Vibes Only: OpenClaw Edition
+          </div>
+        </div>
+        <button
+          className="refresh-btn"
+          onClick={handleRefresh}
+          disabled={refreshing}
+        >
+          {refreshing ? '⏳' : '🔄'} Refresh
+        </button>
+      </header>
 
-            {/* Main Content */}
-            <div className="vault-content">
-                {/* Deposit/Withdraw */}
-                <VaultDeposit
-                    vaultAddress={vaultAddress}
-                    userBalance={stats.userBalance}
-                    onSuccess={loadVaultData}
-                />
+      {/* Stats Grid */}
+      <section className="stats-grid">
+        <div className="stat-card">
+          <span className="stat-label">Total Value Locked</span>
+          <span className="stat-value">{parseFloat(stats.tvl).toFixed(4)} BNB</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-label">Your Balance</span>
+          <span className="stat-value">
+            {isConnected ? `${parseFloat(stats.userBalance).toFixed(4)} BNB` : 'Connect Wallet'}
+          </span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-label">AI Actions Executed</span>
+          <span className="stat-value">{stats.actionCount}</span>
+        </div>
+        <div className="stat-card status-card">
+          <span className="stat-label">Agent Status</span>
+          <span className="stat-value status-active">🟢 Active</span>
+        </div>
+      </section>
 
-                {/* AI Decision Log */}
-                <AIDecisionLog
-                    actions={recentActions}
-                    getActionTypeName={getActionTypeName}
-                />
+      {/* Main Content */}
+      <div className="vault-content">
+        {/* Deposit/Withdraw */}
+        <VaultDeposit
+          vaultAddress={vaultAddress}
+          userBalance={stats.userBalance}
+          onSuccess={loadVaultData}
+        />
 
-                {/* Action History */}
-                <VaultHistory
-                    actions={recentActions}
-                    getActionTypeName={getActionTypeName}
-                />
-            </div>
+        {/* AI Decision Log */}
+        <AIDecisionLog
+          actions={recentActions}
+          getActionTypeName={getActionTypeName}
+        />
 
-            {/* How it Works */}
-            <section className="how-it-works">
-                <h2>🧠 How the AI Vault Works</h2>
-                <div className="steps-grid">
-                    <div className="step">
-                        <span className="step-number">1</span>
-                        <h3>Deposit</h3>
-                        <p>Deposit BNB into the vault</p>
-                    </div>
-                    <div className="step">
-                        <span className="step-number">2</span>
-                        <h3>Analyze</h3>
-                        <p>AI analyzes market conditions</p>
-                    </div>
-                    <div className="step">
-                        <span className="step-number">3</span>
-                        <h3>Execute</h3>
-                        <p>Optimal strategies are executed onchain</p>
-                    </div>
-                    <div className="step">
-                        <span className="step-number">4</span>
-                        <h3>Earn</h3>
-                        <p>Automatically compound returns</p>
-                    </div>
-                </div>
-            </section>
+        {/* Action History */}
+        <VaultHistory
+          actions={recentActions}
+          getActionTypeName={getActionTypeName}
+        />
+      </div>
 
-            <style>{`
+      {/* How it Works */}
+      <section className="how-it-works">
+        <h2>🧠 How the AI Vault Works</h2>
+        <div className="steps-grid">
+          <div className="step">
+            <span className="step-number">1</span>
+            <h3>Deposit</h3>
+            <p>Deposit BNB into the vault</p>
+          </div>
+          <div className="step">
+            <span className="step-number">2</span>
+            <h3>Analyze</h3>
+            <p>AI analyzes market conditions</p>
+          </div>
+          <div className="step">
+            <span className="step-number">3</span>
+            <h3>Execute</h3>
+            <p>Optimal strategies are executed onchain</p>
+          </div>
+          <div className="step">
+            <span className="step-number">4</span>
+            <h3>Earn</h3>
+            <p>Automatically compound returns</p>
+          </div>
+        </div>
+      </section>
+
+      <style>{`
         .ai-vault-page {
           max-width: 1200px;
           margin: 0 auto;
@@ -373,8 +373,8 @@ const AIVaultPage: React.FC = () => {
           color: #f0b90b;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default AIVaultPage;

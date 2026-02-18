@@ -57,7 +57,7 @@ export class GeminiAdvisor {
         }
 
         this.genAI = new GoogleGenerativeAI(key);
-        this.modelName = 'gemini-2.0-flash';
+        this.modelName = 'gemini-flash-latest';
     }
 
     /**
@@ -80,9 +80,9 @@ export class GeminiAdvisor {
                 model: this.modelName,
                 usage: response.usageMetadata
                     ? {
-                          inputTokens: response.usageMetadata.promptTokenCount || 0,
-                          outputTokens: response.usageMetadata.candidatesTokenCount || 0,
-                      }
+                        inputTokens: response.usageMetadata.promptTokenCount || 0,
+                        outputTokens: response.usageMetadata.candidatesTokenCount || 0,
+                    }
                     : undefined,
             };
         } catch (error: any) {
@@ -159,9 +159,9 @@ Respond in this EXACT JSON format (no markdown, no code blocks, just raw JSON):
             reasoning: String(parsed.reasoning || 'No reasoning provided'),
             alternatives: Array.isArray(parsed.alternatives)
                 ? parsed.alternatives.map((alt: any) => ({
-                      name: String(alt.name),
-                      symbol: String(alt.symbol).toUpperCase(),
-                  }))
+                    name: String(alt.name),
+                    symbol: String(alt.symbol).toUpperCase(),
+                }))
                 : undefined,
         };
     }

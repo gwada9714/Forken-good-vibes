@@ -1,0 +1,11 @@
+{
+  "network": "bscTestnet",
+  "chainId": "97",
+  "deployer": "0x79749eA6bF5580A10b9F4716d41270DF75F44F24",
+  "aiAgent": "0x79749eA6bF5580A10b9F4716d41270DF75F44F24",
+  "contracts": {
+    "AIVault": "0xdaAD8d3679EAF994363b83D49c8159f98144b580",
+    "StrategyExecutor": "0x37d2F68F4DF00b588cC2d1D69426EbBC56910311"
+  },
+  "timestamp": "2026-02-18T17:00:27.696Z"
+}

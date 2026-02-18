@@ -1,63 +1,63 @@
 import React from 'react';
 
 interface AIAction {
-    actionType: number;
-    target: string;
-    amount: string;
-    timestamp: number;
-    reasoning: string;
+  actionType: number;
+  target: string;
+  amount: string;
+  timestamp: number;
+  reasoning: string;
 }
 
 interface AIDecisionLogProps {
-    actions: AIAction[];
-    getActionTypeName: (type: number) => string;
+  actions: AIAction[];
+  getActionTypeName: (type: number) => string;
 }
 
 const AIDecisionLog: React.FC<AIDecisionLogProps> = ({ actions, getActionTypeName }) => {
-    const formatDate = (timestamp: number) => {
-        return new Date(timestamp * 1000).toLocaleString();
-    };
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleString();
+  };
 
-    // Get only actions with reasoning
-    const decisionsWithReasoning = actions.filter(a => a.reasoning && a.reasoning.length > 0);
+  // Get only actions with reasoning
+  const decisionsWithReasoning = actions.filter(a => a.reasoning && a.reasoning.length > 0);
 
-    return (
-        <div className="ai-decision-log">
-            <h3>🧠 AI Decision Log</h3>
-            <p className="subtitle">Transparency into AI decision-making</p>
+  return (
+    <div className="ai-decision-log">
+      <h3>🧠 AI Decision Log</h3>
+      <p className="subtitle">Transparency into AI decision-making</p>
 
-            {decisionsWithReasoning.length === 0 ? (
-                <div className="empty-state">
-                    <div className="robot-icon">🤖</div>
-                    <p>The AI agent is analyzing market conditions...</p>
-                    <p className="subtext">Decisions will appear here with full reasoning</p>
+      {decisionsWithReasoning.length === 0 ? (
+        <div className="empty-state">
+          <div className="robot-icon">🤖</div>
+          <p>The AI agent is analyzing market conditions...</p>
+          <p className="subtext">Decisions will appear here with full reasoning</p>
+        </div>
+      ) : (
+        <div className="decision-list">
+          {decisionsWithReasoning.slice(0, 5).map((action, index) => (
+            <div key={index} className="decision-item">
+              <div className="decision-header">
+                <span className="decision-action">{getActionTypeName(action.actionType)}</span>
+                <span className="decision-time">{formatDate(action.timestamp)}</span>
+              </div>
+              <div className="decision-reasoning">
+                "{action.reasoning}"
+              </div>
+              {action.amount !== '0.0' && (
+                <div className="decision-impact">
+                  Impact: {action.amount} BNB
                 </div>
-            ) : (
-                <div className="decision-list">
-                    {decisionsWithReasoning.slice(0, 5).map((action, index) => (
-                        <div key={index} className="decision-item">
-                            <div className="decision-header">
-                                <span className="decision-action">{getActionTypeName(action.actionType)}</span>
-                                <span className="decision-time">{formatDate(action.timestamp)}</span>
-                            </div>
-                            <div className="decision-reasoning">
-                                "{action.reasoning}"
-                            </div>
-                            {action.amount !== '0.0' && (
-                                <div className="decision-impact">
-                                    Impact: {action.amount} BNB
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            <div className="ai-disclaimer">
-                <span>⚡</span> Powered by Claude AI • All decisions logged onchain
+              )}
             </div>
+          ))}
+        </div>
+      )}
 
-            <style>{`
+      <div className="ai-disclaimer">
+        <span>⚡</span> Powered by Gemini Flash (Free) • All decisions logged onchain
+      </div>
+
+      <style>{`
         .ai-decision-log {
           background: #1a1a2e;
           border-radius: 16px;
@@ -159,8 +159,8 @@ const AIDecisionLog: React.FC<AIDecisionLogProps> = ({ actions, getActionTypeNam
           gap: 0.5rem;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default AIDecisionLog;
