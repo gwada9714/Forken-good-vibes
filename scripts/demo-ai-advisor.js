@@ -31,7 +31,7 @@ async function askGemini(projectDescription, options = {}) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const modelName = 'gemini-flash-latest';
+    const modelName = 'gemini-2.0-flash';
 
     let prompt = `You are an AI assistant helping users create ERC-20 tokens on BNB Chain.
 

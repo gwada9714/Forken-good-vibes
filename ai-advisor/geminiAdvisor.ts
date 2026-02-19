@@ -57,7 +57,7 @@ export class GeminiAdvisor {
         }
 
         this.genAI = new GoogleGenerativeAI(key);
-        this.modelName = 'gemini-flash-latest';
+        this.modelName = 'gemini-2.0-flash';
     }
 
     /**

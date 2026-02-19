@@ -5,7 +5,7 @@
 
 ## Tools Used
 - **Claude (Anthropic)** — Architecture, code generation, debugging, tokenomics analysis
-- **Claude API** — AI advisor for token parameter suggestions
+- **Gemini API (Google)** — AI advisor for token parameter suggestions (free tier)
 
 ---
 
@@ -97,20 +97,20 @@
 
 ---
 
-### 2026-02-11 — Day 5: Claude API Integration in Token Factory Flow
+### 2026-02-11 — Day 5: Gemini API Integration in Token Factory Flow
 
-#### Session 10: Claude API Advisor for Token Creation
-**Goal**: Add a real Claude API call in the Token Factory flow so the AI integration is in the demonstrated execution path, not just the vault module.
+#### Session 10: Gemini API Advisor for Token Creation
+**Goal**: Add a real Gemini API call in the Token Factory flow so the AI integration is in the demonstrated execution path, not just the vault module.
 
 **AI Contributions**:
-- Created `ai-advisor/claudeAdvisor.ts` — Claude API service that takes a natural language project description and returns structured token parameter suggestions (name, symbol, decimals, supply, reasoning, alternatives)
-- Uses `claude-sonnet-4-20250514` via `@anthropic-ai/sdk`
-- Updated `ai-advisor/tokenAnalyzer.ts` to integrate both Claude API suggestions and rule-based validation into a two-tier analysis system (`analyzeWithAI()`)
-- Created `scripts/demo-ai-advisor.js` — full demo script showing the end-to-end flow: user describes project → Claude API suggests parameters → rule-based validator checks → ready for deployment
+- Created `ai-advisor/geminiAdvisor.ts` — Gemini API service that takes a natural language project description and returns structured token parameter suggestions (name, symbol, decimals, supply, reasoning, alternatives)
+- Uses `gemini-2.0-flash` via `@google/generative-ai` (free tier)
+- Updated `ai-advisor/tokenAnalyzer.ts` to integrate both Gemini API suggestions and rule-based validation into a two-tier analysis system (`analyzeWithAI()`)
+- Created `scripts/demo-ai-advisor.js` — full demo script showing the end-to-end flow: user describes project → Gemini API suggests parameters → rule-based validator checks → ready for deployment
 
 **Files**:
-- `ai-advisor/claudeAdvisor.ts` (new — 155 lines)
-- `ai-advisor/tokenAnalyzer.ts` (updated — added `analyzeWithAI()` and Claude imports)
+- `ai-advisor/geminiAdvisor.ts` (new — 155 lines)
+- `ai-advisor/tokenAnalyzer.ts` (updated — added `analyzeWithAI()` and Gemini imports)
 - `scripts/demo-ai-advisor.js` (new — 230 lines)
 
 #### Session 11: Documentation Wording Update
@@ -120,9 +120,9 @@
 - "AI agent" → "AI assistant" throughout
 - "optimal tokenomics" → "token parameters" / "token parameter suggestions"
 - "analyzes and suggests optimal tokenomics" → "analyzes project descriptions and suggests token parameters"
-- Added "AI Integration Details" section to README showing both Claude API calls
+- Added "AI Integration Details" section to README showing both Gemini API calls
 - Updated SUBMISSION.md with accurate technical claims
-- Added `ANTHROPIC_API_KEY` to `.env.example`
+- Added `GOOGLE_AI_API_KEY` to `.env.example`
 - Added `demo:ai` script to `package.json`
 
 **Files**:
@@ -131,20 +131,18 @@
 - `.env.example` (updated)
 - `package.json` (updated)
 
-#### Session 12: Frontend — Claude API Integration + Premium BNB Design
-**Goal**: Integrate Claude API into the frontend Token Factory flow and upgrade all hackathon pages to premium BNB design.
+#### Session 12: Frontend — Gemini API Integration + Premium BNB Design
+**Goal**: Integrate Gemini API into the frontend Token Factory flow and upgrade all hackathon pages to premium BNB design.
 
 **AI Contributions**:
-- Created `src/services/ai/claudeTokenAdvisor.ts` — frontend service calling Claude API via Vite proxy (`/api/claude → api.anthropic.com`) to avoid CORS
-- Rewrote `AITokenCreatorPage.tsx` — added Step 1 "Describe Your Project" with textarea + "Ask AI" button that calls Claude API and pre-fills the form with suggestions (name, symbol, decimals, supply, reasoning, alternatives)
+- Created `src/services/ai/geminiTokenAdvisor.ts` — frontend service calling Gemini API directly (supports CORS, no proxy needed)
+- Rewrote `AITokenCreatorPage.tsx` — added Step 1 "Describe Your Project" with textarea + "Ask AI" button that calls Gemini API and pre-fills the form with suggestions (name, symbol, decimals, supply, reasoning, alternatives)
 - Rewrote `AIAdvisorPage.tsx` — complete redesign from inline CSS styles to Tailwind + Framer Motion, BNB gold color scheme (#F0B90B), glass morphism, premium cards
-- Updated `vite.config.ts` — added proxy to route `/api/claude` to Anthropic API
 
 **Files**:
-- `src/services/ai/claudeTokenAdvisor.ts` (new — 145 lines)
+- `src/services/ai/geminiTokenAdvisor.ts` (new — 145 lines)
 - `src/pages/AITokenCreatorPage.tsx` (rewritten — 718 lines)
 - `src/pages/AIAdvisorPage.tsx` (rewritten — 157 lines)
-- `vite.config.ts` (updated — proxy added)
 
 ---
 
@@ -155,23 +153,23 @@
 | AI-assisted dev hours | ~6h |
 | Smart Contract lines | ~162 |
 | AI Advisor lines (rule-based) | ~239 |
-| AI Advisor lines (Claude API, backend) | ~155 |
-| AI Advisor lines (Claude API, frontend) | ~145 |
+| AI Advisor lines (Gemini API, backend) | ~155 |
+| AI Advisor lines (Gemini API, frontend) | ~145 |
 | Demo script lines (AI advisor) | ~230 |
 | Frontend lines (Token Creator) | ~718 |
 | Frontend lines (AI Advisor page) | ~157 |
 | Tests | AITokenFactory.test.js + AIVault.test.js |
 | Deployments | BSC Testnet + BSC Mainnet |
 | Verification | BscScan Verified |
-| Claude API calls | 3 modules (claudeAdvisor backend + frontend + decision-engine) |
+| Gemini API calls | 3 modules (geminiAdvisor backend + frontend + decision-engine) |
 
 ---
 
 ## Key Design Decisions (AI-Assisted)
 
 1. **Factory pattern** over individual deployment — enables tracking all tokens
-2. **Two-tier AI analysis** — Claude API for intelligent suggestions + rule-based validation for instant safety checks
+2. **Two-tier AI analysis** — Gemini API for intelligent suggestions + rule-based validation for instant safety checks
 3. **User signs** all transactions — AI never touches funds
 4. **OpenZeppelin 5.x** — battle-tested, audited contracts
 5. **Events for transparency** — `TokenCreated` emitted for every deployment
-6. **Claude API in Token Factory flow** — real API call for token parameter suggestions, not just the vault module
+6. **Gemini API in Token Factory flow** — real API call for token parameter suggestions, not just the vault module

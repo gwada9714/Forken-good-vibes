@@ -4,7 +4,7 @@
 > **BNB Good Vibes Only: OpenClaw Edition** | Track: Builders
 
 ![BSC](https://img.shields.io/badge/BSC-F0B90B?style=flat&logo=binance&logoColor=white)
-![Solidity](https://img.shields.io/badge/Solidity-%5E0.8.20-363636?style=flat&logo=solidity)
+![Solidity](https://img.shields.io/badge/Solidity-%5E0.8.24-363636?style=flat&logo=solidity)
 ![AI Powered](https://img.shields.io/badge/AI-Gemini_Free-blueviolet?style=flat)
 ![Tests](https://img.shields.io/badge/Tests-passing-brightgreen?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat)
@@ -35,10 +35,12 @@ npx hardhat test
 
 | Item | Details |
 |---|---|
-| **Network** | **BSC Testnet** (chainId: 97) |
-| **AI Vault** | [`0xdaAD...580`](https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) Verified |
-| **Strategy Executor** | [`0x37d2...311`](https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code) Verified |
+| **Network** | **BSC Mainnet** (chainId: 56) |
+| **AITokenFactory** | [`0xdaAD8d3679EAF994363b83D49c8159f98144b580`](https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) — Verified |
+| **Demo Token (FKD)** | [`0x4f51bC9fc05a8C4D99FD8256d52695807514f881`](https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881) |
 | **Deployer** | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24` |
+| **AIVault (bonus)** | [`0xdaAD8d3679EAF994363b83D49c8159f98144b580`](https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) — BSC Testnet |
+| **StrategyExecutor (bonus)** | [`0x37d2F68F4DF00b588cC2d1D69426EbBC56910311`](https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code) — BSC Testnet |
 
 ---
 
@@ -60,7 +62,7 @@ An AI assistant (Gemini API — **free tier**) analyzes a user's project descrip
 ```
 
 1. **User describes** their project in natural language
-2. **Gemini API analyzes** (free tier) the description and suggests name, symbol, supply, decimals
+2. **Gemini API analyzes** (`gemini-2.0-flash` — free tier) the description and suggests name, symbol, supply, decimals
 3. **Rule-based validator** checks parameters (length, reserved symbols, suspicious patterns)
 4. **User reviews** and approves or adjusts the parameters
 5. **Factory deploys** the ERC-20 on BNB Chain
@@ -84,12 +86,17 @@ The AI layer uses the **Gemini API** (Google — **free tier**) at two levels:
 - Returns structured JSON: name, symbol, decimals, supply, reasoning, alternatives
 - Used in the Token Factory flow (the main submission)
 
-### 2. Gemini API — DeFi Decision Engine (`ai-agent/decision-engine.ts`)
+### 2. Gemini API — Frontend Token Advisor (`src/services/ai/geminiTokenAdvisor.ts`)
+- Frontend service calling Gemini API directly (CORS supported, no proxy)
+- Called from `AITokenCreatorPage.tsx` via the "Ask AI" button
+- Pre-fills the token creation form with AI suggestions
+
+### 3. Gemini API — DeFi Decision Engine (`ai-agent/decision-engine.ts`)
 - Analyzes DeFi market conditions for the AI Vault (bonus module)
 - Calls `gemini-2.0-flash` for stake/unstake/compound decisions
 - Not part of the core Token Factory flow
 
-### 3. Rule-Based Validator (`ai-advisor/tokenAnalyzer.ts`)
+### 4. Rule-Based Validator (`ai-advisor/tokenAnalyzer.ts`)
 - Instant client-side parameter validation (no API call)
 - Checks name/symbol length, suspicious patterns, reserved symbols, supply ranges
 - Scores parameters 0-100 with actionable suggestions
@@ -111,9 +118,9 @@ node scripts/demo-ai-advisor.js "I want a token for my online gaming platform"
 ```
 good vibes/
 ├── contracts/
-│   ├── AITokenFactory.sol     # Token Factory contract (main)
-│   ├── AIVault.sol            # AI Vault (bonus module)
-│   └── StrategyExecutor.sol   # Strategy executor (bonus)
+│   ├── AITokenFactory.sol     # Token Factory contract (main — BSC Mainnet)
+│   ├── AIVault.sol            # AI Vault (bonus module — BSC Testnet)
+│   └── StrategyExecutor.sol   # Strategy executor (bonus — BSC Testnet)
 │
 ├── ai-advisor/                # AI advisory layer
 │   ├── geminiAdvisor.ts       # Gemini API integration (token suggestions — FREE)
@@ -136,7 +143,8 @@ good vibes/
 │   └── AIVault.test.js          # Vault tests
 │
 ├── .env.example               # Environment template
-├── deployment-token-factory.json  # Deployed addresses
+├── deployment-token-factory.json  # Deployed addresses (Mainnet)
+├── deployment.json            # Deployed addresses (Testnet bonus)
 └── hardhat.config.cjs          # Hardhat configuration
 ```
 
@@ -190,7 +198,8 @@ npx hardhat run scripts/demo-token.js --network bscTestnet
 - **Smart Contracts**: Solidity 0.8.24, OpenZeppelin 5.x
 - **Framework**: Hardhat
 - **AI**: Gemini API (Google — **FREE**) — `@google/generative-ai`
-- **Blockchain**: BNB Smart Chain (BSC)
+- **Blockchain**: BNB Smart Chain (BSC) — Mainnet + Testnet
+- **Frontend**: React + TypeScript + Tailwind CSS + Framer Motion
 - **Testing**: Chai + Hardhat Network
 
 ---
@@ -232,6 +241,7 @@ MIT License — ForKen Team 2026
 
 ## Links
 
+- **Live App**: https://forken.io (homepage — click the hackathon button to access AI Token Creator)
 - **Hackathon**: [DoraHacks Good Vibes](https://dorahacks.io/hackathon/goodvibes/detail)
 - **BNB Chain**: [bnbchain.org](https://www.bnbchain.org)
 - **OpenClaw**: [GitHub](https://github.com/bnb-chain/good-vibes-only-openclaw-edition)

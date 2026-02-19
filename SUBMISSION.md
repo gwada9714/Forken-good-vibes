@@ -22,8 +22,8 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 
 - Gemini API integration (**free**) for token parameter suggestions from natural language descriptions
 - Rule-based parameter validation (score 0-100, actionable suggestions)
-- No-code ERC-20 deployment on BSC
-- On-chain proof: verified contract + tx hash
+- No-code ERC-20 deployment on BSC Mainnet
+- On-chain proof: verified contract + tx hash on BSCScan
 - User owns the token (not the factory or any agent)
 - Fully reproducible: `npm install && npx hardhat test && deploy`
 
@@ -35,16 +35,17 @@ The Token Factory flow calls the Gemini API (`gemini-2.0-flash` via `@google/gen
 3. Provide alternative name/symbol suggestions
 
 This is a real API call present in two execution paths:
-- **Backend**: `ai-advisor/geminiAdvisor.ts` + demo script `scripts/demo-ai-advisor.js`
-- **Frontend**: `src/services/ai/claudeTokenAdvisor.ts` → called from `AITokenCreatorPage.tsx` via "Ask AI" button
+- **Backend demo**: `ai-advisor/geminiAdvisor.ts` + `scripts/demo-ai-advisor.js`
+- **Frontend**: `src/services/ai/geminiTokenAdvisor.ts` → called from `AITokenCreatorPage.tsx` via the "Ask AI" button
 
 ### Tech Stack
 
 - Solidity 0.8.24 + OpenZeppelin 5.x
 - Hardhat + ethers.js
-- Gemini API (Google — **FREE**) — `@google/generative-ai`
+- Gemini API (Google — **FREE**) — `@google/generative-ai` (`gemini-2.0-flash`)
 - React + TypeScript + Tailwind CSS + Framer Motion
-- BSC Testnet (chainId: 97)
+- BSC Mainnet (chainId: 56) — Token Factory
+- BSC Testnet (chainId: 97) — AI Vault bonus module
 
 ## Track
 
@@ -54,18 +55,19 @@ This is a real API call present in two execution paths:
 
 | Item | Link |
 |---|---|
-| **AI Vault (Verified)** | https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
-| **Strategy Executor (Verified)** | https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code |
+| **AITokenFactory (Mainnet — Verified)** | https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
+| **Demo Token FKD (Mainnet)** | https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881 |
+| **AIVault (Testnet — bonus)** | https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
+| **StrategyExecutor (Testnet — bonus)** | https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code |
 | **Deployer** | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24` |
-| **Network** | BSC Testnet (chainId: 97) |
+| **Network (main)** | BSC Mainnet (chainId: 56) |
 
 ## Links
 
 - **GitHub (hackathon repo)**: https://github.com/gwada9714/Forken-good-vibes
 - **GitHub (main Forken app)**: https://github.com/gwada9714/Forken
 - **AI Build Log**: [AI_BUILD_LOG.md](./AI_BUILD_LOG.md) — 12 sessions documented with AI contributions
-- **Demo Video**: [TODO: add demo video link]
-- **Live App**: https://forken-82beb.web.app/ (homepage — click the hackathon button to access AI Token Creator)
+- **Live App**: https://forken.io (homepage — click the hackathon button to access AI Token Creator)
 
 ## Reproducibility
 
@@ -97,7 +99,7 @@ Liquidity provisioning, token launch, fundraising, airdrops, and any market-faci
 ```
 Built Forken Token Factory for @BNBChain #GoodVibesOnly hackathon
 
-AI-assisted no-code ERC-20 deployment on BSC.
+AI-assisted no-code ERC-20 deployment on BSC Mainnet.
 - Describe your project in natural language
 - Gemini API (free) suggests token parameters
 - Review, adjust, deploy with on-chain proof
