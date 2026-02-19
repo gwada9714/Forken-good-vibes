@@ -33,13 +33,13 @@ npx hardhat test
 
 ## On-Chain Proof
 
-| Item | Details |
-|---|---|
-| **Network** | **BSC Mainnet** (chainId: 56) |
-| **AITokenFactory** | [`0xdaAD8d3679EAF994363b83D49c8159f98144b580`](https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) — Verified |
-| **Demo Token (FKD)** | [`0x4f51bC9fc05a8C4D99FD8256d52695807514f881`](https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881) |
-| **Deployer** | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24` |
-| **AIVault (bonus)** | [`0xdaAD8d3679EAF994363b83D49c8159f98144b580`](https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) — BSC Testnet |
+| Item                               | Details                                                                                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Network**                  | **BSC Mainnet** (chainId: 56)                                                                                                               |
+| **AITokenFactory**           | [`0xdaAD8d3679EAF994363b83D49c8159f98144b580`](https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) — Verified            |
+| **Demo Token (FKD)**         | [`0x4f51bC9fc05a8C4D99FD8256d52695807514f881`](https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881)                             |
+| **Deployer**                 | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24`                                                                                                    |
+| **AIVault (bonus)**          | [`0xdaAD8d3679EAF994363b83D49c8159f98144b580`](https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code) — BSC Testnet |
 | **StrategyExecutor (bonus)** | [`0x37d2F68F4DF00b588cC2d1D69426EbBC56910311`](https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code) — BSC Testnet |
 
 ---
@@ -69,6 +69,7 @@ An AI assistant (Gemini API — **free tier**) analyzes a user's project descrip
 6. **Proof returned** — contract address + tx hash
 
 ### Key Principles
+
 - **No agent private key** — user always signs
 - **No fund management** — factory only creates tokens
 - **Two-tier analysis** — Gemini API (free) for suggestions + rule-based validation for safety
@@ -81,22 +82,26 @@ An AI assistant (Gemini API — **free tier**) analyzes a user's project descrip
 The AI layer uses the **Gemini API** (Google — **free tier**) at two levels:
 
 ### 1. Gemini API — Token Parameter Suggestions (`ai-advisor/geminiAdvisor.ts`)
+
 - Takes a natural language project description
 - Calls `gemini-2.5-flash` via `@google/generative-ai` (free)
 - Returns structured JSON: name, symbol, decimals, supply, reasoning, alternatives
 - Used in the Token Factory flow (the main submission)
 
 ### 2. Gemini API — Frontend Token Advisor (`src/services/ai/geminiTokenAdvisor.ts`)
+
 - Frontend service calling Gemini API directly (CORS supported, no proxy)
 - Called from `AITokenCreatorPage.tsx` via the "Ask AI" button
 - Pre-fills the token creation form with AI suggestions
 
 ### 3. Gemini API — DeFi Decision Engine (`ai-agent/decision-engine.ts`)
+
 - Analyzes DeFi market conditions for the AI Vault (bonus module)
 - Calls `gemini-2.5-flash` for stake/unstake/compound decisions
 - Not part of the core Token Factory flow
 
 ### 4. Rule-Based Validator (`ai-advisor/tokenAnalyzer.ts`)
+
 - Instant client-side parameter validation (no API call)
 - Checks name/symbol length, suspicious patterns, reserved symbols, supply ranges
 - Scores parameters 0-100 with actionable suggestions
@@ -153,6 +158,7 @@ good vibes/
 ## Quickstart
 
 ### Prerequisites
+
 - Node.js 18+
 - npm
 - Google AI API key — **free** at [aistudio.google.com](https://aistudio.google.com/)
@@ -241,7 +247,7 @@ MIT License — ForKen Team 2026
 
 ## Links
 
-- **Live App**: https://forken.io (homepage — click the hackathon button to access AI Token Creator)
+- **Live App**: https://forken-82beb.web.app/ai-token-creator (homepage — click the hackathon button to access AI Token Creator)
 - **Hackathon**: [DoraHacks Good Vibes](https://dorahacks.io/hackathon/goodvibes/detail)
 - **BNB Chain**: [bnbchain.org](https://www.bnbchain.org)
 - **OpenClaw**: [GitHub](https://github.com/bnb-chain/good-vibes-only-openclaw-edition)

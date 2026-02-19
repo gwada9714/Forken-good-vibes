@@ -30,11 +30,13 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 ### AI Integration
 
 The Token Factory flow calls the Gemini API (`gemini-2.5-flash` via `@google/generative-ai` — **free tier**) to:
+
 1. Accept a project description in natural language
 2. Return structured token parameters (name, symbol, decimals, supply) with reasoning
 3. Provide alternative name/symbol suggestions
 
 This is a real API call present in two execution paths:
+
 - **Backend demo**: `ai-advisor/geminiAdvisor.ts` + `scripts/demo-ai-advisor.js`
 - **Frontend**: `src/services/ai/geminiTokenAdvisor.ts` → called from `AITokenCreatorPage.tsx` via the "Ask AI" button
 
@@ -53,21 +55,21 @@ This is a real API call present in two execution paths:
 
 ## On-Chain Proof
 
-| Item | Link |
-|---|---|
-| **AITokenFactory (Mainnet — Verified)** | https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
-| **Demo Token FKD (Mainnet)** | https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881 |
-| **AIVault (Testnet — bonus)** | https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
-| **StrategyExecutor (Testnet — bonus)** | https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code |
-| **Deployer** | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24` |
-| **Network (main)** | BSC Mainnet (chainId: 56) |
+| Item                                           | Link                                                                                |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **AITokenFactory (Mainnet — Verified)** | https://bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code         |
+| **Demo Token FKD (Mainnet)**             | https://bscscan.com/address/0x4f51bC9fc05a8C4D99FD8256d52695807514f881              |
+| **AIVault (Testnet — bonus)**           | https://testnet.bscscan.com/address/0xdaAD8d3679EAF994363b83D49c8159f98144b580#code |
+| **StrategyExecutor (Testnet — bonus)**  | https://testnet.bscscan.com/address/0x37d2F68F4DF00b588cC2d1D69426EbBC56910311#code |
+| **Deployer**                             | `0x79749eA6bF5580A10b9F4716d41270DF75F44F24`                                      |
+| **Network (main)**                       | BSC Mainnet (chainId: 56)                                                           |
 
 ## Links
 
 - **GitHub (hackathon repo)**: https://github.com/gwada9714/Forken-good-vibes
 - **GitHub (main Forken app)**: https://github.com/gwada9714/Forken
 - **AI Build Log**: [AI_BUILD_LOG.md](./AI_BUILD_LOG.md) — 12 sessions documented with AI contributions
-- **Live App**: https://forken.io (homepage — click the hackathon button to access AI Token Creator)
+- **Live App**: https://forken-82beb.web.app/ai-token-creator (homepage — click the hackathon button to access AI Token Creator)
 
 ## Reproducibility
 
