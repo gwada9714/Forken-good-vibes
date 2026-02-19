@@ -104,7 +104,7 @@
 
 **AI Contributions**:
 - Created `ai-advisor/geminiAdvisor.ts` — Gemini API service that takes a natural language project description and returns structured token parameter suggestions (name, symbol, decimals, supply, reasoning, alternatives)
-- Uses `gemini-2.0-flash` via `@google/generative-ai` (free tier)
+- Uses `gemini-2.5-flash` via `@google/generative-ai` (free tier)
 - Updated `ai-advisor/tokenAnalyzer.ts` to integrate both Gemini API suggestions and rule-based validation into a two-tier analysis system (`analyzeWithAI()`)
 - Created `scripts/demo-ai-advisor.js` — full demo script showing the end-to-end flow: user describes project → Gemini API suggests parameters → rule-based validator checks → ready for deployment
 

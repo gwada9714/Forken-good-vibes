@@ -62,7 +62,7 @@ An AI assistant (Gemini API — **free tier**) analyzes a user's project descrip
 ```
 
 1. **User describes** their project in natural language
-2. **Gemini API analyzes** (`gemini-2.0-flash` — free tier) the description and suggests name, symbol, supply, decimals
+2. **Gemini API analyzes** (`gemini-2.5-flash` — free tier) the description and suggests name, symbol, supply, decimals
 3. **Rule-based validator** checks parameters (length, reserved symbols, suspicious patterns)
 4. **User reviews** and approves or adjusts the parameters
 5. **Factory deploys** the ERC-20 on BNB Chain
@@ -82,7 +82,7 @@ The AI layer uses the **Gemini API** (Google — **free tier**) at two levels:
 
 ### 1. Gemini API — Token Parameter Suggestions (`ai-advisor/geminiAdvisor.ts`)
 - Takes a natural language project description
-- Calls `gemini-2.0-flash` via `@google/generative-ai` (free)
+- Calls `gemini-2.5-flash` via `@google/generative-ai` (free)
 - Returns structured JSON: name, symbol, decimals, supply, reasoning, alternatives
 - Used in the Token Factory flow (the main submission)
 
@@ -93,7 +93,7 @@ The AI layer uses the **Gemini API** (Google — **free tier**) at two levels:
 
 ### 3. Gemini API — DeFi Decision Engine (`ai-agent/decision-engine.ts`)
 - Analyzes DeFi market conditions for the AI Vault (bonus module)
-- Calls `gemini-2.0-flash` for stake/unstake/compound decisions
+- Calls `gemini-2.5-flash` for stake/unstake/compound decisions
 - Not part of the core Token Factory flow
 
 ### 4. Rule-Based Validator (`ai-advisor/tokenAnalyzer.ts`)

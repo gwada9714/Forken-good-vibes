@@ -45,7 +45,7 @@ export class DecisionEngine {
         }
 
         this.genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
-        this.modelName = 'gemini-2.0-flash';
+        this.modelName = 'gemini-2.5-flash';
         this.riskTolerance = parseInt(process.env.RISK_TOLERANCE || '5');
     }
 

@@ -29,7 +29,7 @@ This submission focuses on safe token deployment and on-chain verifiability (con
 
 ### AI Integration
 
-The Token Factory flow calls the Gemini API (`gemini-2.0-flash` via `@google/generative-ai` — **free tier**) to:
+The Token Factory flow calls the Gemini API (`gemini-2.5-flash` via `@google/generative-ai` — **free tier**) to:
 1. Accept a project description in natural language
 2. Return structured token parameters (name, symbol, decimals, supply) with reasoning
 3. Provide alternative name/symbol suggestions
@@ -42,7 +42,7 @@ This is a real API call present in two execution paths:
 
 - Solidity 0.8.24 + OpenZeppelin 5.x
 - Hardhat + ethers.js
-- Gemini API (Google — **FREE**) — `@google/generative-ai` (`gemini-2.0-flash`)
+- Gemini API (Google — **FREE**) — `@google/generative-ai` (`gemini-2.5-flash`)
 - React + TypeScript + Tailwind CSS + Framer Motion
 - BSC Mainnet (chainId: 56) — Token Factory
 - BSC Testnet (chainId: 97) — AI Vault bonus module
